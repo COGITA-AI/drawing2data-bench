@@ -1,0 +1,15 @@
+{
+  "balloons": {
+    "ask_version": "v2",
+    "ask_type": "BALLOONS",
+    "balloons": [
+      {
+        "reference_id": 0,
+        "center": [
+          1487.032958984375,
+          2207.04541015625
+        ]
+      }
+    ]
+  }
+}
