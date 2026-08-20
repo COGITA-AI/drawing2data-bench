@@ -1,4 +1,8 @@
 generation/out
 generation/step
-extraction/dataset
-extraction/output
+extraction/__pycache__
+benchmarks/__pycache__
+dataset
+output
+temp
+.vscode

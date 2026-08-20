@@ -1,11 +1,13 @@
+import argparse
 from rfdetr import RFDETRLarge
 from rfdetr.datasets.aug_configs import AUG_CONSERVATIVE
+from pathlib import Path
 
 DOCUMENT_SCAN_AUG = {"Sequential": {"transforms": [
     {"Rotate": {"limit": 15, "border_mode": 0, "p": 0.4}},
-    
+
     {"Perspective": {"scale": (0.02, 0.05), "keep_size": True, "p": 0.3}},
- 
+
     {"OneOf": {
         "transforms": [
             {"RandomBrightnessContrast": {
@@ -56,15 +58,57 @@ DOCUMENT_SCAN_AUG = {"Sequential": {"transforms": [
 ], "p": 1.0}}
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Train RF-DETR Large on document dataset")
+    parser.add_argument(
+        "--resume",
+        type=str,
+        default=None,
+        help="Path to a checkpoint to resume training from (e.g. output/last.ckpt). "
+             "If omitted, training starts from scratch.",
+    )
+    parser.add_argument(
+        "--dataset-dir",
+        type=str,
+        default="./dataset",
+        help="Path to the dataset directory (default: ./dataset)",
+    )
+    parser.add_argument(
+        "--epochs",
+        type=int,
+        default=50,
+        help="Number of training epochs (default: 50)",
+    )
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=8,
+        help="Batch size (default: 8)",
+    )
+    parser.add_argument(
+        "--grad-accum-steps",
+        type=int,
+        default=2,
+        help="Gradient accumulation steps (default: 2)",
+    )
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
+    args = parse_args()
+
+    if args.resume is not None and not Path(args.resume).exists():
+        raise FileNotFoundError(f"--resume checkpoint not found: {args.resume}")
+
     model = RFDETRLarge(num_classes=9, resolution=704, device="cuda")
 
-    model.train(dataset_dir="./dataset", 
-                epochs=50,
-                batch_size=8,
-                grad_accum_steps=2,
-                aug_config=DOCUMENT_SCAN_AUG,
-                resume="output/last.ckpt",
-                )
+    model.train(
+        dataset_dir=args.dataset_dir,
+        epochs=args.epochs,
+        batch_size=args.batch_size,
+        grad_accum_steps=args.grad_accum_steps,
+        aug_config=DOCUMENT_SCAN_AUG,
+        resume=args.resume,
+    )
 
     model.export()
