@@ -1,0 +1,1 @@
+rfdetr[train,loggers,augmentations]>=1.4.0
