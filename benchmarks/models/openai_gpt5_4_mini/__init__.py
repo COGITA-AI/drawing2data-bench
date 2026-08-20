@@ -33,7 +33,7 @@ class ModelClass(ModelClassBase):
         if works(1.0):
             return factor_1
 
-        while abs(high - low) < 1e-6:
+        while abs(high - low) > 1e-6:
             mid = (low + high) / 2
             if works(mid):
                 low = mid
