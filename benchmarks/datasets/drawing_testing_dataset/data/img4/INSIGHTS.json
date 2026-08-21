@@ -1,0 +1,57 @@
+[
+  {
+    "ask_version": "v2",
+    "ask_type": "INSIGHTS",
+    "page_type": "COMPONENT_DRAWING",
+    "dimensions_before_processing": null,
+    "dimensions_after_processing": {
+      "enclosing_cuboid": {
+        "geometry_type": "CUBOID",
+        "width": {
+          "value": "58.2",
+          "unit": "mm",
+          "size_type": "LINEAR",
+          "tolerance": null
+        },
+        "height": {
+          "value": "37.8",
+          "unit": "mm",
+          "size_type": "LINEAR",
+          "tolerance": null
+        },
+        "depth": {
+          "value": "17.7",
+          "unit": "mm",
+          "size_type": "LINEAR",
+          "tolerance": null
+        }
+      },
+      "enclosing_cylinder": null
+    },
+    "primary_process_options": [],
+    "secondary_processes": [
+      {
+        "reference_id": 25,
+        "label": "ELECTROLESS NICKEL PLATE 5-7\u00b5m To EN ISO 4527",
+        "confidence": null,
+        "process_category": [
+          "COATING",
+          "COATING_FROM_IONDIZED_STATE",
+          "GALVANIC_COATING",
+          "ELECTROLESS_NICKEL_PLATING"
+        ]
+      },
+      {
+        "reference_id": 26,
+        "label": "DE-BURR ALL EXTERNAL CORNERS AND SHARP EDGES",
+        "confidence": null,
+        "process_category": [
+          "SEPARATION",
+          "MACHINING_WITH_GEOMETRICALLY_UNDETERMINED_EDGE",
+          "DEBURRING"
+        ]
+      }
+    ],
+    "volume_estimate": null
+  }
+]

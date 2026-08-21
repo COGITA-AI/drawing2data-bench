@@ -1,0 +1,24 @@
+name: "benchmark"
+
+samples_cap: 10
+
+datasets:
+- generated
+
+models:
+- openai_gpt5_4_mini
+- openai_gpt5_6_Sol
+- gemini_3_1_flash_lite
+- gemini_3_5_flash
+
+metrics:
+- cuboid_volume_fraction
+- balloons_f1
+- balloons_mean_distance
+- feature_lines_f1
+- feature_lines_mean_distance
+- features_f1_em_unstructured
+- features_f1_em_localisation
+- features_normalized_levenshtein_localisation_unpadded
+- features_normalized_levenshtein_localisation_padded
+- features_normalized_levenshtein_unstructured

@@ -1,0 +1,13 @@
+name: "test_custom"
+
+samples_cap: 10
+
+datasets:
+- generated
+
+models:
+- custom
+
+metrics:
+- balloons_f1
+- balloons_mean_distance

@@ -1,0 +1,124 @@
+[
+  {
+    "ask_version": "v2",
+    "ask_type": "META_DATA",
+    "page_type": "COMPONENT_DRAWING",
+    "bill_of_material": null,
+    "certifications": [],
+    "designation": [
+      {
+        "reference_id": 29,
+        "language": null,
+        "value": "SINGLE POWER TERMINAL, MACHINED"
+      }
+    ],
+    "identifiers": [
+      {
+        "reference_id": 27,
+        "language": null,
+        "value": "130/16118",
+        "identifier_type": "DRAWING_NUMBER",
+        "stakeholder": null,
+        "period": null
+      },
+      {
+        "reference_id": 28,
+        "language": null,
+        "value": "26532",
+        "identifier_type": "DOCUMENT_NUMBER",
+        "stakeholder": null,
+        "period": null
+      }
+    ],
+    "general_roughness": {
+      "reference_id": 31,
+      "label": "",
+      "confidence": null,
+      "standard": "ISO 1302:2002",
+      "machining_allowance": null,
+      "material_removal_type": "UNSPECIFIED",
+      "applies_all_around": false,
+      "direction_of_lay": null,
+      "manufacturing_process": "",
+      "conditions": [
+        {
+          "condition_type": null,
+          "filter_type": null,
+          "lambda_s": null,
+          "lambda_c": null,
+          "parameter": "Ra",
+          "evaluation_length": null,
+          "acceptance_criterion": null,
+          "value": {
+            "value": "0.8",
+            "unit": "micrometer",
+            "size_type": "LINEAR",
+            "tolerance": null
+          },
+          "roughness_grade": "N6"
+        }
+      ],
+      "waviness": null
+    },
+    "general_tolerances": {
+      "reference_id": 30,
+      "tolerance_standard": "TOLERANCE_NOTE",
+      "tolerance_class": "",
+      "principle": null
+    },
+    "languages": [
+      "ENG"
+    ],
+    "material_options": [
+      {
+        "reference_id": 32,
+        "material_combination": [
+          {
+            "raw_ocr": "ALUMINIUM 6082",
+            "standard": "NF A 50-404",
+            "designation": "6082 (NF A 50-404)",
+            "material_category": [
+              "NONFERROUS_ALLOY",
+              "ALUMINUM",
+              null
+            ]
+          }
+        ]
+      }
+    ],
+    "notes": [
+      {
+        "reference_id": 34,
+        "label": "'CONTACT FACES' AND O-RING GROOVE TO BE\nSMOOTH FOR ELECTRICAL CONTACT AND\nSEALING TO Ra 0.8\u00b5m.\nCONTECT FACES TO BE FLAT TO 0.05\nPLATING FOR CORROSION AND WEAR\nPROTECTION\nUNLESS STATED OTHERWISE DE-BURR ALL\nEXTERNAL CORNERS AND SHARP EDGES\n0.2mm\nALL DIMENSIONS (INCLUDING THREADS)\nAFTER PLATING\nMACHINED SURFACE TEXTURE AND FLATNESS\nARE CRITICAL\nMATERIAL: ALUMINIUM 6082\nPLATING: ELECTROLESS NICKEL PLATE 5-7\u00b5m To\nEN ISO 4527\nCAD DATA:13016118_18102017",
+        "confidence": {
+          "score": "1.00"
+        },
+        "note_type": "CANVAS_NOTE"
+      },
+      {
+        "reference_id": 35,
+        "label": "THIRD ANGLE PROTECTION",
+        "confidence": {
+          "score": "1.00"
+        },
+        "note_type": "CANVAS_NOTE"
+      },
+      {
+        "reference_id": 36,
+        "label": "DO NOT SCALE",
+        "confidence": {
+          "score": "0.00"
+        },
+        "note_type": "CANVAS_NOTE"
+      }
+    ],
+    "projection_method": null,
+    "unit_systems": [
+      {
+        "reference_id": 33,
+        "unit_system_type": "METRIC"
+      }
+    ],
+    "weight": null
+  }
+]
