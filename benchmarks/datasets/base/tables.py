@@ -8,7 +8,7 @@ class TableCell(BaseModel):
     # page: int
     score: Optional[float] = None
     text: Optional[str] = None
-    fieldtype: Optional[str] = None
+    fiel_dtype: Optional[str] = None
     line_item_id: int
     colspan: int = 1
     rowspan: int = 1

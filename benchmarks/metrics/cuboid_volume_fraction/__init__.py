@@ -23,7 +23,15 @@ class Metric(MetricBase):
 
         dims = []
         for dim_name in dim_names:
-            dims.append(self.parse_float_prefix(insights["dimensions_after_processing"][key][dim_name]["value"]))
+            dim_obj = insights["dimensions_after_processing"][key][dim_name]
+            unit_fact = 1
+            if dim_obj["unit"] == "cm":
+                unit_fact = 10
+            elif dim_obj["unit"] == "dm":
+                unit_fact = 100
+            elif dim_obj["unit"] == "m":
+                unit_fact = 1
+            dims.append(self.parse_float_prefix(["value"]))
         
         volume = np.array(dims).prod() * fact
         return volume

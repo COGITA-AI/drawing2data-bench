@@ -51,10 +51,6 @@ class ModelClass(ModelClassBase):
         openrouter_client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
         api_key=config["OPENROUTER_API_KEY"],
-        default_headers={
-            "HTTP-Referer": "https://cogita.ai",
-            "X-Title":      "Cogita Evaluation Framework",
-            },
         )
         self.client = instructor.from_openai(openrouter_client, mode=instructor.Mode.JSON)
 
@@ -65,32 +61,23 @@ class ModelClass(ModelClassBase):
 
     # wyciąga dane z całej strony według schematu : meta data -> features positioned -> insights
     def forward(self, image:str) -> ExtractionResult: #dostaje base64 zdjęcie, i wyciąga z niego dane
-
         ASK_SCHEMAS = {"META_DATA":ResponseMetaDataComponentDrawing,"FEATURES_POSITIONED":LLMExtractionResult,"INSIGHTS":ResponseInsightsComponentDrawing}
         # ASK_SCHEMAS = {"INSIGHTS":ResponseInsightsComponentDrawing}
         results:dict[str,tuple[str,str]] = {}
         for ask, schema in ASK_SCHEMAS.items():
-            try:
-                res = self.extract_image_with_prompt(image, self.prompts[ask].strip(), schema)
-                results[ask] = res
-            except Exception as exc:
-                print(str(exc))
-                results[ask] = json.loads("{}")
+            res = self.extract_image_with_prompt(image, self.prompts[ask].strip(), schema)
+            results[ask] = res
         extraction_json = {}
-        Path("features_positioned.json").write_text(LLMExtractionResult.model_validate(results["FEATURES_POSITIONED"]).model_dump_json())
-        Path("metadata.json").write_text(results["META_DATA"].model_dump_json())
-        Path("insights.json").write_text(results["INSIGHTS"].model_dump_json())
 
         width, height = self.get_dimensions(image)
         factor = self.factor(width, height)
-        extraction_json = self.to_werk24_results(LLMExtractionResult.model_validate(results["FEATURES_POSITIONED"]), factor)
-        extraction_json["metadata"] = json.loads(results["META_DATA"].model_dump_json())
-        extraction_json["insights"] = json.loads(results["INSIGHTS"].model_dump_json())
+        extraction_json = self.to_werk24_results(LLMExtractionResult.model_validate_json(results["FEATURES_POSITIONED"]), factor)
+        extraction_json["metadata"] = json.loads(results["META_DATA"])
+        extraction_json["insights"] = json.loads(results["INSIGHTS"])
         return extraction_json
         
     #wyciąga dane ze zdjęcia na podstawie promptu i schematu 
     def extract_image_with_prompt(self, image:str, prompt:str, schema:None) -> str:
-         
         image_parts = {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{image}"}}
         messages:list[ChatCompletionMessageParam] = [
             {"role": "system", "content": prompt},
@@ -128,7 +115,6 @@ class ModelClass(ModelClassBase):
             }
             for f in feats
         ]}
-        
 
         type_map = {
             "dimension": "dimensions", "thread": "threads", "bore": "bores",

@@ -30,15 +30,13 @@ class Metric(MetricBase):
 
         if len(lines_output) and len(lines_target):
             cost = np.linalg.norm(lines_output[:, np.newaxis, :, :] - lines_target[np.newaxis, :, :, :], axis=-1).sum(axis=-1)
+            maxi = cost.max()
+            cost[cost > self.threshold] = maxi * 10
+            row_ind, col_ind = linear_sum_assignment(cost)
+            true_positive = (cost[row_ind, col_ind] <= self.threshold).sum()
         else:
-            cost = np.array([[]])
-        
-        maxi = max(cost.max(), cost.max())
-        cost[cost > self.threshold] = maxi * 10
+            true_positive = 0
 
-        row_ind, col_ind = linear_sum_assignment(cost)
-
-        true_positive = (cost[row_ind, col_ind] <= self.threshold).sum()
         false_negative = lines_target.shape[0] - true_positive
         false_positive = lines_output.shape[0] - true_positive
 

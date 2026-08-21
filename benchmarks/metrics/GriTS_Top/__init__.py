@@ -8,33 +8,42 @@ class Metric(MetricBase):
         super().__init__()
 
     def create_grits_grid(self, table: Table):
-        grits_grid = []
+        grid = []
+
+        def ensure_row(r):
+            while len(grid) <= r:
+                grid.append({})
+
         for i, row in enumerate(table):
+            ensure_row(i)
+            col = 0
             for cell in row:
-                if i >= len(grits_grid):
-                    start_x = 0
-                else:
-                    start_x = len(grits_grid[i])
+                while col in grid[i]:
+                    col += 1
 
                 for y in range(cell.rowspan):
-                    if i + y >= len(grits_grid):
-                        grits_grid.append([])
-                    
-                    if len(grits_grid[i + y]) != start_x:
-                        return None
-
+                    ensure_row(i + y)
                     for x in range(cell.colspan):
-                        grits_grid[i + y].append([-x, -y, cell.colspan - x, cell.rowspan - y])
+                        if (col + x) in grid[i + y]:
+                            return None
+                        grid[i + y][col + x] = [-x, -y, cell.colspan - x, cell.rowspan - y]
 
-        if len(grits_grid) == 0:
+                col += cell.colspan
+
+        if len(grid) == 0:
             return None
-        
-        max_len = len(grits_grid[0])
-        for row in grits_grid:
-            if len(row) != max_len:
+
+        max_len = max(len(r) for r in grid)
+        if max_len == 0:
+            return None
+
+        dense_grid = []
+        for r in grid:
+            if len(r) != max_len or set(r.keys()) != set(range(max_len)):
                 return None
-        
-        return np.array(grits_grid)
+            dense_grid.append([r[c] for c in range(max_len)])
+
+        return np.array(dense_grid)
     
     def similarity(self, output, target) -> float:
         area_output = (output[2] - output[0]) * (output[3] - output[1])
@@ -107,7 +116,8 @@ class Metric(MetricBase):
         grid_target = self.create_grits_grid(target)
 
         if grid_output is None or grid_target is None:
-            return 0, 1
+            self.values.append(0)
+            return
 
         index_output_row, index_target_row = self.interrow_grits(grid_output,                    grid_target)
         index_output_col, index_target_col = self.interrow_grits(grid_output.transpose(1, 0, 2), grid_target.transpose(1, 0, 2))

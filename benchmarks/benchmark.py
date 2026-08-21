@@ -71,8 +71,11 @@ if __name__ == "__main__":
                     break
                 sample_id = str(sample.id).rsplit("/", 1)[-1] # placeholder; it should be resolved later, so you can just use sample.id 
                 if not args.test:
-                    extracted = model.forward(sample.image())
-                    Path(f"results/{dirname}/outputs/{data["datasets"][i]}/{data["models"][j]}/{sample_id}.json").write_text(json.dumps(extracted, indent=2))
+                    try:
+                        extracted = model.forward(sample.image())
+                        Path(f"results/{dirname}/outputs/{data["datasets"][i]}/{data["models"][j]}/{sample_id}.json").write_text(json.dumps(extracted, indent=2))
+                    except Exception as exc:
+                        print(f"Unable to process sample {sample_id}: Skipped")
 
     print("Generating outputs done.")
 

@@ -1,0 +1,5 @@
+rfdetr[train,loggers,augmentations]>=1.4.0
+scipy
+openai
+pydantic
+tqdm

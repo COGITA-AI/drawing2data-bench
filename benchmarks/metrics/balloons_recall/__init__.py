@@ -19,11 +19,14 @@ class Metric(MetricBase):
         points_input = np.array(points_input)
         points_target = np.array(points_target)
 
-        distances = np.linalg.norm(points_input[:, np.newaxis, :] - points_target[np.newaxis, :, :], axis=-1)
-        distances[distances > self.threshold] = distances.max() * 10
+        if not len(points_input) and not len(points_target):
+            distances = np.linalg.norm(points_input[:, np.newaxis, :] - points_target[np.newaxis, :, :], axis=-1)
+            distances[distances > self.threshold] = distances.max() * 10
 
-        row_ind, col_ind = linear_sum_assignment(distances)
-        true_positive = (distances[row_ind, col_ind] <= self.threshold).sum()
+            row_ind, col_ind = linear_sum_assignment(distances)
+            true_positive = (distances[row_ind, col_ind] <= self.threshold).sum()
+        else:
+            true_positive = 0
         false_negative = points_target.shape[0] - true_positive
 
         self.tp += true_positive

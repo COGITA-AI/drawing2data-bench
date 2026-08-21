@@ -50,23 +50,16 @@ class Metric(MetricBase):
         metrics = []
         for i in range(len(points_input)):
             if i not in row_ind:
-                metrics.append(0)
+                metrics.append(1)
 
         for i in range(len(points_target)):
             if i not in col_ind:
-                metrics.append(0)
+                metrics.append(1)
                        
 
         for i, j in zip(row_ind, col_ind):
             output_idx = output["balloons"]["balloons"][i]["reference_id"]
             target_idx = target.ground_truth().balloons.balloons[j].reference_id
-
-            if output_idx not in labels_output:
-                print("Dziwne output!")
-                continue
-            if target_idx not in labels_target:
-                print("Dziwne target!")
-                continue
 
             metrics.append(edit_distance(labels_output[output_idx], labels_target[target_idx]) / max(len(labels_output[output_idx]), len(labels_target[target_idx]), 1))
 
