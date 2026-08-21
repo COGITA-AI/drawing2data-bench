@@ -30,7 +30,7 @@ class Metric(MetricBase):
             elif dim_obj["unit"] == "dm":
                 unit_fact = 100
             elif dim_obj["unit"] == "m":
-                unit_fact = 1
+                unit_fact = 1000
             dims.append(self.parse_float_prefix(["value"]))
         
         volume = np.array(dims).prod() * fact
