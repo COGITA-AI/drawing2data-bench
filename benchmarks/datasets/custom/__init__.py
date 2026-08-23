@@ -1,38 +1,31 @@
-from ..base import DatasetClassBase, SampleClassBase, ExtractionResult
+from ..base import DatasetClassBase, SampleClassBase, ExtractionResult, FeatureList
+from pycocotools.coco import COCO
 from pathlib import Path
 import base64
 import json
 import os
 
 class SampleClass(SampleClassBase):
-    def __init__(self, id):
-        super().__init__(id)
+    def __init__(self, id, coco, dirname):
+        self.img_info = coco.loadImgs(self.coco.getImgIds()[int(id)])[0]
+        ann_ids = self.coco.getAnnIds(imgIds=self.img_info['id'])
+        self.anns = FeatureList.model_validate({"feature_list": coco.loadAnns(ann_ids)})
+        self.path = dirname / self.img_info["file_name"]
 
     def image(self):
-        image = base64.b64encode(Path(f"{self.id}/image.png").read_bytes()).decode()
+        image = base64.b64encode(self.path.read_bytes()).decode()
         return image
     
     def ground_truth(self):
-        files = {
-            "BALLOONS.json": "balloons",
-            "META_DATA.json": "metadata",
-            "INSIGHTS.json": "insights",
-            "FEATURES.json": "features",
-            "REFERENCE_POSITIONS.json": "reference_positions",
-        }
-        json_ground_truth = {}
-        for key, name in files.items():
-            json_obj = json.loads(Path(f"{self.id}/{key}").read_text())[0]
-            json_ground_truth[name] = json_obj
-        ground_truth = ExtractionResult.model_validate(json_ground_truth)
-        return ground_truth
+        return self.anns
 
 class DatasetClass(DatasetClassBase):
     def __init__(self) -> None:
         super().__init__()
-        dirname = f"{os.path.dirname(os.path.abspath(__file__))}/data"
-        sample_paths = os.listdir(dirname)
-        self.samples = [SampleClass(f"{dirname}/{sample_path}") for sample_path in sample_paths]
+        dirname = Path(f"{os.path.dirname(os.path.abspath(__file__))}")
+        coco = COCO(dirname / '_annotations.coco.json')
+        img_ids = coco.getImgIds()
+        self.samples = [SampleClass(i, coco, dirname) for i in range(len(img_ids))]
 
     def __len__(self) -> int:
         return len(self.samples)

@@ -1,5 +1,5 @@
-from ..custom import DatasetClass as DatasetClassBase
-from ..custom import SampleClass as SampleClassBase
+from ..custom_werk24 import DatasetClass as DatasetClassBase
+from ..custom_werk24 import SampleClass as SampleClassBase
 from ..base.tables import Table
 import os
 from pathlib import Path

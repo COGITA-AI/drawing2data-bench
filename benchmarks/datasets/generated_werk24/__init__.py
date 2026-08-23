@@ -1,5 +1,5 @@
-from ..custom import DatasetClass as DatasetClassBase
-from ..custom import SampleClass, SampleClassBase
+from ..custom_werk24 import DatasetClass as DatasetClassBase
+from ..custom_werk24 import SampleClass, SampleClassBase
 import os
 
 class DatasetClass(DatasetClassBase):

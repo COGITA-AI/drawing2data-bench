@@ -3,3 +3,4 @@ scipy
 openai
 pydantic
 tqdm
+pycocotools

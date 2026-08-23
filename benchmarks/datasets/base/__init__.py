@@ -15,10 +15,22 @@ class ExtractionResult(BaseModel):
     features: ResponseFeaturesComponentDrawing
     reference_positions: ResponseReferencePositions
 
-class SampleClassBase(ABC):
-    def __init__(self, id : str):
-        self.id : str = id
+class Feature(BaseModel):
+    id: int
+    bbox: tuple[int, int, int, int]
+    text: str = ""
+    category_id: int
 
+class FeatureList(BaseModel):
+    feature_list: list[Feature]
+
+    def __getitem__(self, key):
+        return self.feature_list[key]
+
+    def __len__(self):
+        return len(self.feature_list)
+
+class SampleClassBase(ABC):
     @abstractmethod
     def image(self):
         ...
