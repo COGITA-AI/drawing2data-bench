@@ -26,7 +26,7 @@ def test_balloons_mean_distance(testing_data):
 
 def test_balloons_f1(testing_data):
     output, target = testing_data
-    from metrics.balloons_f1 import Metric
+    from metrics.bbox_f1 import Metric
     metric = Metric()
     
     assert metric.forward(output, target) == pytest.approx(0.5714285714)
@@ -54,7 +54,7 @@ def test_features_f1_em_unstructured(testing_data):
 
 def test_features_normalized_levenshtein_unstructured(testing_data):
     output, target = testing_data
-    from metrics.features_normalized_levenshtein_unstructured import Metric
+    from metrics.features_cer_unstructured import Metric
     metric = Metric()
     
     assert metric.forward(output, target) == pytest.approx(0.2962962962)
@@ -68,7 +68,7 @@ def test_features_f1_em_localisation(testing_data):
 
 def test_features_normalized_levenshtein_localisation(testing_data):
     output, target = testing_data
-    from metrics.features_normalized_levenshtein_localisation_unpadded import Metric
+    from metrics.features_cer_localisation_unpadded import Metric
     metric = Metric()
     
     assert metric.forward(output, target) == pytest.approx(0.0370370370)

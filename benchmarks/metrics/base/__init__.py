@@ -8,6 +8,7 @@ class MetricBase(ABC):
     def __init__(self):
         super().__init__()
         self.eps = 1e-6
+        self.threshold = 0.5
 
         self.clear()
 

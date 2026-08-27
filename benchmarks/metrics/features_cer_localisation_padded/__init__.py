@@ -1,7 +1,9 @@
 from metrics.base import MetricBase
+from datasets.base import FeatureList, SampleClassBase
 from scipy.optimize import linear_sum_assignment
 import numpy as np
 import json
+from nltk.metrics.distance import edit_distance
 
 class Metric(MetricBase):
     def __init__(self):
@@ -9,6 +11,7 @@ class Metric(MetricBase):
     
     def aggregate(self, output : FeatureList, target : SampleClassBase):
         target = target.ground_truth()
+
         bbox_output = []
         for feature in output.feature_list:
             bbox_output.append(feature.bbox)
@@ -20,7 +23,7 @@ class Metric(MetricBase):
         bbox_output = np.array(bbox_output)
         bbox_target = np.array(bbox_target)
 
-        same = np.zeros((len(bbox_output, bbox_target)))
+        ious = np.zeros((len(bbox_output, bbox_target)))
 
         for i, box1 in enumerate(bbox_output):
             for j, box2 in enumerate(bbox_output):
@@ -28,32 +31,37 @@ class Metric(MetricBase):
                 dy = max(min(max(box1[1], box1[3]), max(box2[1], box2[3])) - max(min(box1[1], box1[3]), min(box2[1], box2[3])), 0)
                 intersection = dx * dy
                 union = (max(box1[0], box1[2]) - min(box1[0], box1[2])) * (max(box1[1], box1[3]) - min(box1[1], box1[3])) + (max(box2[0], box2[2]) - min(box2[0], box2[2])) * (max(box2[1], box2[3]) - min(box2[1], box2[3])) - intersection
-                same[i][j] = (intersection / (union + self.union) > self.threshold) and output[i].text == target[i].text and output[i].category == target[i].category 
+                ious[i][j] = intersection / (union + self.union)
 
-        true_positive = 0
-        if not (len(bbox_output) == 0 or len(bbox_target) == 0):
-            row_ind, col_ind = linear_sum_assignment(same)
-            true_positive = (same[row_ind, col_ind]).sum()
+        row_ind, col_ind = linear_sum_assignment(ious)
 
-        false_negative = bbox_target.shape[0] - true_positive
-        false_positive = bbox_output.shape[0] - true_positive
+        metrics = []
+        for i in range(len(output)):
+            if i not in row_ind:
+                metrics.append(1)
 
-        self.tp += true_positive
-        self.fp += false_positive
-        self.fn += false_negative
+        for i in range(len(target)):
+            if i not in col_ind:
+                metrics.append(1)
+                       
+
+        for i, j in zip(row_ind, col_ind):
+            output_idx = output["balloons"]["balloons"][i]["reference_id"]
+            target_idx = target.ground_truth().balloons.balloons[j].reference_id
+
+            metrics.append(edit_distance(output[output_idx].text, target[target_idx].text) / max(len(output[output_idx].text), len(target[target_idx].text), 1))
+
+        if len(metrics) == 0:
+            return 0, 1
+        
+        metrics = np.array(metrics)
+    
+        self.values.append(metrics.mean())
+        self.weights.append(len(metrics))
 
     def value(self):
-        precision = self.tp / max(self.tp + self.fp, 1)
-        recall = self.tp / max(self.tp + self.fn, 1)
-
-        metric = 2 * precision * recall / (precision + recall + self.eps)
-
-        if self.tp == 0 and self.fp == 0 and self.fn == 0:
-            metric = 1
-
-        return metric
+        return 1-(np.array(self.values) / np.array(self.weights).sum(keepdims=True) * np.array(self.weights)).sum()
     
     def clear(self):
-        self.tp = 0
-        self.fp = 0
-        self.fn = 0
+        self.values = []
+        self.weights = []

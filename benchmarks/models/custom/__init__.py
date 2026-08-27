@@ -1,5 +1,7 @@
+from model_download import download_model
 from models.base import ModelClassBase
 from rfdetr import RFDETRLarge
+from pathlib import Path
 from io import BytesIO
 from PIL import Image
 import numpy as np
@@ -10,7 +12,12 @@ class ModelClass(ModelClassBase):
     def __init__(self):
         super().__init__()
 
-        self.detector = RFDETRLarge(num_classes=9, resolution=704, pretrain_weights=f"{os.path.dirname(os.path.abspath(__file__))}/detector.pth", device="cuda")
+        path = (Path(os.path.dirname(os.path.abspath(__file__))) / "detector.pth")
+
+        if not path.exists():
+            download_model()
+
+        self.detector = RFDETRLarge(num_classes=9, resolution=704, pretrain_weights=str(path), device="cuda")
         self.detector.optimize_for_inference()
 
     def forward(self, image):
