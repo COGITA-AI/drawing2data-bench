@@ -100,7 +100,7 @@ if __name__ == "__main__":
     if args.resume is not None and not Path(args.resume).exists():
         raise FileNotFoundError(f"--resume checkpoint not found: {args.resume}")
 
-    model = RFDETRLarge(num_classes=9, resolution=704, device="cuda")
+    model = RFDETRLarge(resolution=1056, device="cuda")
 
     model.train(
         dataset_dir=args.dataset_dir,
