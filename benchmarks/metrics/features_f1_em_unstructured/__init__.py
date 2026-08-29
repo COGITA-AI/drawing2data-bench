@@ -1,4 +1,5 @@
 from metrics.base import MetricBase
+from datasets.base import FeatureList, SampleClassBase
 from scipy.optimize import linear_sum_assignment
 import numpy as np
 import json
@@ -7,59 +8,37 @@ class Metric(MetricBase):
     def __init__(self):
         super().__init__()
     
-    def aggregate(self, output, target):
-        _target = json.loads(target.ground_truth().model_dump_json())["features"]
+    def aggregate(self, output, target : SampleClassBase):
+        target = target.ground_truth()
+        output = FeatureList.model_validate(output)
 
-        types = ["bores", "chamfers", "dimensions", "gdnts", "radii", "roughnesses", "threads"]
+        cost = np.zeros((len(output), len(target)))
 
-        tps = []
-        fps = []
-        fns = []
-        for t in types:
-            inp = output["features"][t]
-            tar = _target[t]
+        for i in range(len(output)):
+            for j in range(len(target)):
+                cost[i][j] = 1 if output[i].text == target[j].text and output[i].category == target[j].category else 0
 
-            labels_output = []
-            for feature in inp:
-                labels_output.append(feature["label"])
-            
-            labels_target = []
-            for feature in tar:
-                labels_target.append(feature["label"])
+        row_ind, col_ind = linear_sum_assignment(cost, maximize=True)
 
-            cost = np.zeros((len(labels_output), len(labels_target)))
+        true_positive = (cost[row_ind, col_ind]).sum()
+        false_negative = len(target) - true_positive
+        false_positive = len(output) - true_positive
 
-            for i in range(len(labels_output)):
-                for j in range(len(labels_target)):
-                    cost[i][j] = 1 if labels_output[i] == labels_target[j] else 0
-
-            row_ind, col_ind = linear_sum_assignment(cost, maximize=True)
-
-            true_positive = (cost[row_ind, col_ind]).sum()
-            false_negative = len(labels_target) - true_positive
-            false_positive = len(labels_output) - true_positive
-
-            tps.append(true_positive)
-            fps.append(false_positive)
-            fns.append(false_negative)
-
-        tps = np.array(tps)
-        fps = np.array(fps)
-        fns = np.array(fns)
-        self.tps += tps
-        self.fps += fps
-        self.fns += fns
+        self.tps += true_positive
+        self.fps += false_positive
+        self.fns += false_negative
 
     def value(self):
-        precision = self.tps / np.maximum(self.tps + self.fps, 1)
-        recall = self.tps / np.maximum(self.tps + self.fns, 1)
+        precision = self.tps / max(self.tps + self.fps, 1)
+        recall = self.tps / max(self.tps + self.fns, 1)
 
-        metrics = 2 * precision * recall / (precision + recall + self.eps)
-        metrics[(self.tps + self.fps + self.fns) == 0] = 1
+        metric = 2 * precision * recall / (precision + recall + self.eps)
+        if self.tps + self.fps + self.fns == 0:
+            return 1
 
-        return metrics.mean()
+        return metric
     
     def clear(self):
-        self.tps = np.zeros((7, ))
-        self.fps = np.zeros((7, ))
-        self.fns = np.zeros((7, ))
+        self.tps = 0
+        self.fps = 0
+        self.fns = 0

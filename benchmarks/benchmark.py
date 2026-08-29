@@ -2,6 +2,8 @@ from pathlib import Path
 from tqdm import tqdm
 import importlib
 import argparse
+import requests
+import dotenv
 import yaml
 import json
 import os
@@ -65,15 +67,14 @@ if __name__ == "__main__":
         for j, model in enumerate(models):
             print(f"Testing {data["models"][j]}...")
             os.mkdir(f"results/{dirname}/outputs/{data["datasets"][i]}/{data["models"][j]}")
-            # it would be nice if requests could be sent in batches
             for k, sample in tqdm(enumerate(dataset)):
                 if k == data["samples_cap"]:
                     break
-                sample_id = str(sample.id).rsplit("/", 1)[-1] # placeholder; it should be resolved later, so you can just use sample.id 
+                sample_id = str(sample.id).rsplit("/", 1)[-1]
                 if not args.test:
                     try:
                         extracted = model.forward(sample.image())
-                        Path(f"results/{dirname}/outputs/{data["datasets"][i]}/{data["models"][j]}/{sample_id}.json").write_text(json.dumps(extracted, indent=2))
+                        Path(f"results/{dirname}/outputs/{data["datasets"][i]}/{data["models"][j]}/{sample_id}.json").write_text(extracted.model_dump_json(indent=2))
                     except Exception as exc:
                         print(f"Unable to process sample {sample_id}: Skipped")
 
