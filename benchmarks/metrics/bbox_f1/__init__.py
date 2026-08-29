@@ -4,7 +4,7 @@ from scipy.optimize import linear_sum_assignment
 import numpy as np
 
 class Metric(MetricBase):
-    def __init__(self, threshold=50):
+    def __init__(self, threshold=0.5):
         super().__init__()
         self.threshold = threshold
 
@@ -41,8 +41,9 @@ class Metric(MetricBase):
         false_positive = bbox_output.shape[0] - true_positive
         return true_positive, false_positive, false_negative
     
-    def aggregate(self, output : FeatureList, target : SampleClassBase):
+    def aggregate(self, output, target : SampleClassBase):
         target = target.ground_truth()
+        output = FeatureList.model_validate(output)
         
         true_positive, false_positive, false_negative = self.statistics(output, target)
 

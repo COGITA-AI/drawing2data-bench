@@ -9,14 +9,17 @@ class Metric(MetricBase):
     def __init__(self):
         super().__init__()
     
-    def aggregate(self, output : FeatureList, target : SampleClassBase):
+    def aggregate(self, output, target : SampleClassBase):
         target = target.ground_truth()
+        output = FeatureList.model_validate(output)
 
         cost = np.zeros((len(output), len(target)))
 
         for i in range(len(output)):
             for j in range(len(target)):
-                cost[i][j] = edit_distance(output[i], target[j]) / max(len(output[i]), len(target[j]), 1)
+                output_text = output[i].text
+                target_text = target[j].text
+                cost[i][j] = edit_distance(output_text, target_text) / max(len(output_text), len(target_text), 1)
 
         row_ind, col_ind = linear_sum_assignment(cost)
 

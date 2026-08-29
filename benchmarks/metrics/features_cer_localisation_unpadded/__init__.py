@@ -9,8 +9,9 @@ class Metric(MetricBase):
     def __init__(self):
         super().__init__()
     
-    def aggregate(self, output : FeatureList, target : SampleClassBase):
+    def aggregate(self, output, target : SampleClassBase):
         target = target.ground_truth()
+        output = FeatureList.model_validate(output)
 
         bbox_output = []
         for feature in output.feature_list:
@@ -23,10 +24,10 @@ class Metric(MetricBase):
         bbox_output = np.array(bbox_output)
         bbox_target = np.array(bbox_target)
 
-        ious = np.zeros((len(bbox_output, bbox_target)))
+        ious = np.zeros((len(bbox_output), len(bbox_target)))
 
         for i, box1 in enumerate(bbox_output):
-            for j, box2 in enumerate(bbox_output):
+            for j, box2 in enumerate(bbox_target):
                 dx = max(min(max(box1[0], box1[2]), max(box2[0], box2[2])) - max(min(box1[0], box1[2]), min(box2[0], box2[2])), 0)
                 dy = max(min(max(box1[1], box1[3]), max(box2[1], box2[3])) - max(min(box1[1], box1[3]), min(box2[1], box2[3])), 0)
                 intersection = dx * dy
@@ -38,10 +39,9 @@ class Metric(MetricBase):
         metrics = []     
 
         for i, j in zip(row_ind, col_ind):
-            output_idx = output["balloons"]["balloons"][i]["reference_id"]
-            target_idx = target.ground_truth().balloons.balloons[j].reference_id
-
-            metrics.append(edit_distance(output[output_idx].text, target[target_idx].text) / max(len(output[output_idx].text), len(target[target_idx].text), 1))
+            output_text = output[i].text
+            target_text = target[j].text
+            metrics.append(edit_distance(output_text, target_text) / max(len(output_text), len(target_text), 1))
 
         if len(metrics) == 0:
             return 0, 1

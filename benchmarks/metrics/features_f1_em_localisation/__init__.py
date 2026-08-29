@@ -1,4 +1,5 @@
 from metrics.base import MetricBase
+from ...datasets.base import FeatureList, SampleClassBase
 from scipy.optimize import linear_sum_assignment
 import numpy as np
 import json
@@ -7,8 +8,9 @@ class Metric(MetricBase):
     def __init__(self):
         super().__init__()
     
-    def aggregate(self, output : FeatureList, target : SampleClassBase):
+    def aggregate(self, output, target : SampleClassBase):
         target = target.ground_truth()
+        output = FeatureList.model_validate(output)
         bbox_output = []
         for feature in output.feature_list:
             bbox_output.append(feature.bbox)

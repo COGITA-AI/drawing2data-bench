@@ -1,254 +1,32 @@
 {
-    "balloons": {
-        "ask_version": "v2",
-        "ask_type": "BALLOONS",
-        "balloons": [
-            {
-                "reference_id": 0,
-                "center": [
-                    329,
-                    130
-                ]
-            },
-            {
-                "reference_id": 1,
-                "center": [
-                    300,
-                    156
-                ]
-            },
-            {
-                "reference_id": 2,
-                "center": [
-                    500,
-                    71
-                ]
-            }
-        ]
+  "feature_list": [
+    {
+      "id": 0,
+      "bbox": [10, 10, 110, 60],
+      "text": "R8.9",
+      "category": "radius",
+      "confidence": 0.9
     },
-    "features": {
-        "ask_version": "v2",
-        "ask_type": "FEATURES",
-        "page_type": "COMPONENT_DRAWING",
-        "bores": [],
-        "chamfers": [],
-        "dimensions": [
-            {
-                "reference_id": 0,
-                "label": "R8.9",
-                "confidence": {
-                "score": "0.9"
-                },
-                "nominal_value": "8.9",
-                "unit": "mm"
-            },
-            {
-                "reference_id": 1,
-                "label": "17.7 \u00b10.1",
-                "confidence": {
-                "score": "0.94"
-                },
-                "nominal_value": "17.7",
-                "unit": "mm"
-            },
-            {
-                "reference_id": 2,
-                "label": "29.6\u00b0",
-                "confidence": {
-                "score": "0.87"
-                },
-                "nominal_value": "29.6",
-                "unit": "deg"
-            }
-        ],
-        "gdnts": [],
-        "radii": [],
-        "roughnesses": [],
-        "threads": []
+    {
+      "id": 1,
+      "bbox": [200, 10, 300, 60],
+      "text": "17.7±0.1",
+      "category": "dimension",
+      "confidence": 0.94
     },
-    "insights": {
-        "ask_version": "v2",
-        "ask_type": "INSIGHTS",
-        "page_type": "COMPONENT_DRAWING",
-        "dimensions_before_processing": null,
-        "dimensions_after_processing": {
-        "enclosing_cuboid": {
-            "geometry_type": "CUBOID",
-            "width": {
-            "value": "37",
-            "unit": "mm",
-            "size_type": "LINEAR",
-            "tolerance": {
-                "tolerance_grade": null,
-                "deviation_lower": "-0.2",
-                "deviation_upper": "0.2",
-                "fit": null,
-                "is_theoretically_exact": false,
-                "is_reference": false,
-                "is_general_tolerance": true,
-                "is_approximation": false
-            }
-            },
-            "height": {
-            "value": "58",
-            "unit": "mm",
-            "size_type": "LINEAR",
-            "tolerance": {
-                "tolerance_grade": null,
-                "deviation_lower": "-0.2",
-                "deviation_upper": "0.2",
-                "fit": null,
-                "is_theoretically_exact": false,
-                "is_reference": false,
-                "is_general_tolerance": true,
-                "is_approximation": false
-            }
-            },
-            "depth": {
-            "value": "17",
-            "unit": "mm",
-            "size_type": "LINEAR",
-            "tolerance": {
-                "tolerance_grade": null,
-                "deviation_lower": "-0.2",
-                "deviation_upper": "0.2",
-                "fit": null,
-                "is_theoretically_exact": false,
-                "is_reference": false,
-                "is_general_tolerance": true,
-                "is_approximation": false
-            }
-            }
-        },
-        "enclosing_cylinder": null
-        },
-        "primary_process_options": [
-        {
-            "primary_process": "MILLING",
-            "axis_count": null
-        },
-        {
-            "primary_process": "TURNING",
-            "requires_secondary_milling": true
-        }
-        ],
-        "secondary_processes": [
-        {
-            "reference_id": 1,
-            "label": "Electroless nickel plating, 5-7 \u00b5m to EN ISO 4527, for corrosion and wear protection",
-            "confidence": {
-            "score": "0.98"
-            },
-            "process_category": [
-            "COATING",
-            "PLATING",
-            "ELECTROLESS_NICKEL_PLATING"
-            ]
-        },
-        {
-            "reference_id": 2,
-            "label": "Deburr all external corners and sharp edges to 0.2 mm unless otherwise stated",
-            "confidence": {
-            "score": "0.98"
-            },
-            "process_category": [
-            "SEPARATION",
-            "DEBURRING"
-            ]
-        },
-        {
-            "reference_id": 3,
-            "label": "Contact faces and O-ring groove to be smooth for electrical contact and sealing to Ra 0.8 \u00b5m",
-            "confidence": {
-            "score": "0.95"
-            },
-            "process_category": [
-            "SURFACE_FINISHING",
-            "MACHINED_SURFACE_TEXTURE"
-            ]
-        },
-        {
-            "reference_id": 4,
-            "label": "Contact faces to be flat to 0.05",
-            "confidence": {
-            "score": "0.95"
-            },
-            "process_category": [
-            "SURFACE_FINISHING",
-            "FLATNESS_CONTROL"
-            ]
-        }
-        ],
-        "volume_estimate": null
+    {
+      "id": 2,
+      "bbox": [400, 10, 500, 60],
+      "text": "29.6°",
+      "category": "dimension",
+      "confidence": 0.87
     },
-    "reference_positions": {
-        "ask_version": "v2",
-        "ask_type": "REFERENCE_POSITIONS",
-        "reference_positions": [
-            {
-                "reference_id": 0,
-                "polygon": {
-                    "coordinate_space": "PIXEL_SPACE",
-                    "coordinates": [
-                        [
-                            61,
-                            29
-                        ],
-                        [
-                            61,
-                            248
-                        ]
-                    ]
-                }
-            },
-            {
-                "reference_id": 1,
-                "polygon": {
-                    "coordinate_space": "PIXEL_SPACE",
-                    "coordinates": [
-                        [
-                            163,
-                            80
-                        ],
-                        [
-                            163,
-                            127
-                        ]
-                    ]
-                }
-            },
-            {
-                "reference_id": 2,
-                "polygon": {
-                    "coordinate_space": "PIXEL_SPACE",
-                    "coordinates": [
-                        [
-                            160,
-                            180
-                        ],
-                        [
-                            190,
-                            200
-                        ]
-                    ]
-                }
-            },
-            {
-                "reference_id": 3,
-                "polygon": {
-                    "coordinate_space": "PIXEL_SPACE",
-                    "coordinates": [
-                        [
-                            217,
-                            213
-                        ],
-                        [
-                            240,
-                            213
-                        ]
-                    ]
-                }
-            }
-        ]
+    {
+      "id": 3,
+      "bbox": [600, 10, 700, 60],
+      "text": "EXTRA",
+      "category": "note",
+      "confidence": 0.8
     }
+  ]
 }

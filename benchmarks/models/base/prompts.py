@@ -392,11 +392,6 @@ NEVER:
 - create a feature for unreadable noise
 - "correct" unusual drawing notation based on what you think it should say
 
-The README explicitly states that generated specifications should not be treated
-as silently invented information, and that synthetic content exists in some
-dataset classes. Your task is image reading: report what is actually visible in
-the supplied image. :contentReference[oaicite:1]{index=1}
-
 ==================================================
 IMPORTANT CLASSIFICATION RULES
 ==================================================

@@ -1,7 +1,7 @@
 from typing import Literal, cast, override
 import instructor
 from models.base import ModelClassBase
-from .prompts import PROMPTS
+from .prompts import PROMPT
 from openai import OpenAI
 from openai.types.chat import ChatCompletionMessageParam
 from datasets.base import FeatureList
@@ -14,7 +14,7 @@ from PIL import Image
 class ModelClass(ModelClassBase):
     def __init__(self, MAX_TOKENS:int=13000):
         self.MAX_TOKENS:int = MAX_TOKENS
-        self.prompts:dict[str,str] = PROMPTS 
+        self.prompts:dict[str,str] = PROMPT 
 
         config = dotenv.dotenv_values(".env")
 

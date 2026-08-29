@@ -1,4 +1,5 @@
-from model_download import download_model
+from .model_download import download_model
+from ...datasets.base import FeatureList, Feature, Category
 from models.base import ModelClassBase
 from rfdetr import RFDETRLarge
 from pathlib import Path
@@ -22,21 +23,18 @@ class ModelClass(ModelClassBase):
 
     def forward(self, image):
         image = Image.open(BytesIO(base64.b64decode(image)))
+        detections = self.detector.predict(image, threshold=0.5)
+        class_name = detections.data["class_name"]
 
-        xyxy = np.array(self.detector.predict(image, threshold=0.5).xyxy)
-        balloons_points = np.concat(((xyxy[:, 0:1] + xyxy[:, 2:3])/2, (xyxy[:, 1:2] + xyxy[:, 3:4])/2), axis=1)
+        lst = []
+        for i in range(len(detections.xyxy)):
+            obj = {
+                "bbox": detections.xyxy[i],
+                "confidence": detections.confidence[i],
+                "category": Category(class_name[i])
+            }
+            lst.append(Feature.model_validate(obj))
 
-        balloons = {"balloons": {
-            "ask_version": "v2",
-            "ask_type": "BALLOONS",
-            "balloons": []
-        }}
+        feature_lst = FeatureList.model_validate({"feature_list": lst})
 
-
-        for idx, pt in enumerate(balloons_points):
-            balloons["balloons"]["balloons"].append({
-                "reference_id": idx,
-                "center": pt.tolist()
-            })
-
-        return balloons
+        return feature_lst

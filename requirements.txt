@@ -4,3 +4,4 @@ openai
 pydantic
 tqdm
 pycocotools
+gdown

@@ -8,8 +8,9 @@ class Metric(MetricBase):
     def __init__(self):
         super().__init__()
     
-    def aggregate(self, output : FeatureList, target : SampleClassBase):
+    def aggregate(self, output, target : SampleClassBase):
         target = target.ground_truth()
+        output = FeatureList.model_validate(output)
 
         cost = np.zeros((len(output), len(target)))
 
@@ -28,8 +29,8 @@ class Metric(MetricBase):
         self.fns += false_negative
 
     def value(self):
-        precision = self.tps / np.max(self.tps + self.fps, 1)
-        recall = self.tps / np.max(self.tps + self.fns, 1)
+        precision = self.tps / max(self.tps + self.fps, 1)
+        recall = self.tps / max(self.tps + self.fns, 1)
 
         metric = 2 * precision * recall / (precision + recall + self.eps)
         if self.tps + self.fps + self.fns == 0:
