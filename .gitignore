@@ -1,8 +1,10 @@
-generation/out
-generation/step
 extraction/__pycache__
 benchmarks/__pycache__
+generation/__pycache__
+generation/cli/__pycache__
+models
 dataset
 output
 temp
 .vscode
+.env

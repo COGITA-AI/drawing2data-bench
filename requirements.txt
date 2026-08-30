@@ -1,1 +1,11 @@
 rfdetr[train,loggers,augmentations]>=1.4.0
+scipy
+openai
+pydantic>=2
+tqdm
+pycocotools
+gdown
+cadquery>=2.8
+matplotlib>=3.7
+pillow>=10
+pytest>=7
