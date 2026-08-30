@@ -1,0 +1,18 @@
+{
+  "table": [
+    {
+      "row": [
+        {"score": 0.9, "text": "Item", "fieldtype": "Description", "line_item_id": 0},
+        {"score": 0.9, "text": "Qty", "fieldtype": "Qty", "line_item_id": 0},
+        {"score": 0.9, "text": "Price", "fieldtype": "Unit Price", "line_item_id": 0}
+      ]
+    },
+    {
+      "row": [
+        {"score": 0.9, "text": "Bolt", "fieldtype": "Description", "line_item_id": 1},
+        {"score": 0.9, "text": "4", "fieldtype": "Qty", "line_item_id": 1},
+        {"score": 0.9, "text": "2.50", "fieldtype": "Unit Price", "line_item_id": 1, "colspan": 2}
+      ]
+    }
+  ]
+}
