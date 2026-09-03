@@ -13,16 +13,33 @@ from models.base import ModelClassBase
 
 from compute_metrics import main as compute_metrics
 
+def key_usage():
+    config = dotenv.dotenv_values(".env")
+    api_key = config["OPENROUTER_API_KEY"]
+    if not api_key:
+        raise ValueError("OPENROUTER_API_KEY not found in .env")
+
+    response = requests.get(
+        "https://openrouter.ai/api/v1/key",
+        headers={"Authorization": f"Bearer {api_key}"}
+    )
+    response.raise_for_status()
+    return response.json()['data']['usage']
+
 if __name__ == "__main__":
     # parsing arguments and yaml file
     parser = argparse.ArgumentParser(description="A simple benchmarking framework")
     parser.add_argument("--config", default="./default.yml", help="Config file to use")
     parser.add_argument("--test", action="store_true", help="Set True if you want to run every loop without inferencing models")
+    parser.add_argument("--no_costs", action="store_true", help="Set True if you don't want to compute model costs")
     
     args = parser.parse_args()
     
     with open(args.config, "r") as f:
         data = yaml.safe_load(f)
+
+    if args.no_costs and "cost" in data["metrics"]:
+        raise Exception('"cost" metric cannot be computed if cost is not estimated!')
 
     name = data['name'] if 'name' in data else "benchmark"
 
@@ -73,7 +90,12 @@ if __name__ == "__main__":
                 sample_id = str(sample.id).rsplit("/", 1)[-1]
                 if not args.test:
                     try:
+                        if not args.no_costs:
+                            old = key_usage()
                         extracted = model.forward(sample.image())
+                        if not args.no_costs:
+                            new = key_usage()
+                            extracted.cost = new - old
                         Path(f"results/{dirname}/outputs/{data["datasets"][i]}/{data["models"][j]}/{sample_id}.json").write_text(extracted.model_dump_json(indent=2))
                     except Exception as exc:
                         print(f"Unable to process sample {sample_id}: Skipped")

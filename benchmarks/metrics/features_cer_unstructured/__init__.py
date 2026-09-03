@@ -23,6 +23,7 @@ class Metric(MetricBase):
 
         row_ind, col_ind = linear_sum_assignment(cost)
 
+        metrics = []
         if len(row_ind) != 0:
             metric = (cost[row_ind, col_ind]).mean()
             metrics.append(metric)

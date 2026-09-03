@@ -20,21 +20,21 @@ class Metric(MetricBase):
         bbox_output = np.array(bbox_output)
         bbox_target = np.array(bbox_target)
 
-        ious = np.zeros((len(bbox_output, bbox_target)))
+        ious = np.zeros((len(bbox_output), len(bbox_target)))
 
         for i, box1 in enumerate(bbox_output):
-            for j, box2 in enumerate(bbox_output):
+            for j, box2 in enumerate(bbox_target):
                 dx = max(min(max(box1[0], box1[2]), max(box2[0], box2[2])) - max(min(box1[0], box1[2]), min(box2[0], box2[2])), 0)
                 dy = max(min(max(box1[1], box1[3]), max(box2[1], box2[3])) - max(min(box1[1], box1[3]), min(box2[1], box2[3])), 0)
                 intersection = dx * dy
                 union = (max(box1[0], box1[2]) - min(box1[0], box1[2])) * (max(box1[1], box1[3]) - min(box1[1], box1[3])) + (max(box2[0], box2[2]) - min(box2[0], box2[2])) * (max(box2[1], box2[3]) - min(box2[1], box2[3])) - intersection
-                ious[i][j] = intersection / (union + self.union)
+                ious[i][j] = intersection / (union + self.eps)
 
 
         same = ious > self.threshold
         true_positive = 0
         if not (len(bbox_output) == 0 or len(bbox_target) == 0):
-            row_ind, col_ind = linear_sum_assignment(same)
+            row_ind, col_ind = linear_sum_assignment(same, maximize=True)
             true_positive = (same[row_ind, col_ind]).sum()
 
         false_negative = bbox_target.shape[0] - true_positive

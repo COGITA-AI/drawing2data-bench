@@ -419,7 +419,7 @@ Below is an example implementation of the class:
 from models.base.openrouter import ModelClass as ModelClassBase
 
 class ModelClass(ModelClassBase):
-    def __init__(self, MAX_TOKENS = 13000):
+    def __init__(self, MAX_TOKENS = 100000):
         super().__init__(MAX_TOKENS)
         self.name:str = "openai/gpt-5.4-mini"
 
@@ -680,24 +680,6 @@ features), from which f1 is computed.
 **Value range:** [0, 1] — higher is better. Pairing by location here is only
 used to decide which features to compare — the metric value itself reflects
 detection performance and content correctness, not localisation quality.
-
-**cer (localisation, unpadded)**
-
-**Category:** semantic-localisation metric.
-
-**What it measures:** the mean character error rate (CER) between the labels
-of features paired by location. The reported value is 1 minus the mean CER.
-
-**How it works:** ground-truth and generated features are paired one-to-one
-based on location — the Hungarian algorithm is applied to the IoU of the
-features' bounding boxes — and the CER of each pair is averaged. Features
-that could not be paired (too many on one side) are skipped and do not affect
-the result.
-
-**Value range:** [0, 1] — higher is better. The semantics (quality of the
-extracted content) is only checked here based on location — the metric lets
-you verify that the model reads content correctly in the places it correctly
-located itself.
 
 **cer (localisation, padded)**
 
