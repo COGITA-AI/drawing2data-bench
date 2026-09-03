@@ -266,6 +266,9 @@ def build_dataset(results: Sequence[dict], out_dir: str,
         # empty directory cluttering the output. A split only appears once it
         # has images, so a trainer expecting it gets a directory, not a ghost.
         if not entries:
+            split_dir = os.path.join(out_dir, split)
+            if os.path.isdir(split_dir):
+                shutil.rmtree(split_dir)
             continue
         split_dir = os.path.join(out_dir, split)
         os.makedirs(split_dir, exist_ok=True)
