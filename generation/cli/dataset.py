@@ -65,9 +65,7 @@ def _split_of(stem: str, val_frac: float, test_frac: float) -> str:
     val_frac = max(0.0, val_frac)
     test_frac = max(0.0, test_frac)
     if val_frac + test_frac >= 1.0:
-        # degenerate request; keep at least something to train on
-        val_frac = min(val_frac, 1.0)
-        test_frac = max(0.0, 1.0 - val_frac)
+        raise ValueError("val_frac + test_frac must be less than 1")
     digest = hashlib.sha1(stem.encode("utf-8")).digest()
     frac = int.from_bytes(digest[:4], "big") / 2 ** 32
     if frac < val_frac:
