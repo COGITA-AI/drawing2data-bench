@@ -2,7 +2,7 @@
 
 Run from the repository root with::
 
-    python -m generation.autodraft.cli "generation/examples/models/*.step" -o dataset
+    python -m generation.cli "generation/examples/models/*.step" -o dataset
 
 After ``pip install -e generation``, the shorter ``autodraft`` command is
 available from any working directory.
