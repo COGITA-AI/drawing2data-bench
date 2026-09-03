@@ -366,8 +366,7 @@ class AnnotationRecord(BaseModel):
         description="Factor the source model was scaled by before drawing "
                     "(1.0 = as supplied). Sub-millimetre models are lifted "
                     "onto a drawable size, because two decimals cannot state "
-                    "a 0.035 mm feature; every dimension on the sheet is the "
-                    "scaled geometry, so multiply by this to recover the "
+                    "scaled geometry, so divide by this to recover the "
                     "size in the file.")
     warnings: List[str] = Field(
         default_factory=list,
