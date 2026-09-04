@@ -27,7 +27,7 @@ class ModelClass(ModelClassBase):
     def get_dimensions(self, image: str):
         img_bytes = base64.b64decode(image)
         with Image.open(BytesIO(img_bytes)) as img:
-            return img.size
+            return (img.size[0] * 1.5, img.size[1] * 1.5) # multiply by 1.5 to account for the downscaling factor used in SampleClass.image
 
     def forward(self, image:str) -> FeatureList: 
         result = self.extract_image_with_prompt(image, self.prompt.strip(), FeatureList)

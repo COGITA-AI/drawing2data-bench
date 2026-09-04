@@ -99,6 +99,7 @@ if __name__ == "__main__":
                         Path(f"results/{dirname}/outputs/{data["datasets"][i]}/{data["models"][j]}/{sample_id}.json").write_text(extracted.model_dump_json(indent=2))
                     except Exception as exc:
                         print(f"Unable to process sample {sample_id}: Skipped")
+                        Path(f"results/{dirname}/outputs/{data["datasets"][i]}/{data["models"][j]}/{sample_id}.json.log").write_text(str(exc))
 
     print("Generating outputs done.")
 

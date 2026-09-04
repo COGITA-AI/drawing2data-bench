@@ -23,7 +23,19 @@ class SampleClass(SampleClassBase):
         self.path = dirname / self.img_info["file_name"]
 
     def image(self):
-        image = base64.b64encode(self.path.read_bytes()).decode()
+        from PIL import Image
+        import io
+
+        with Image.open(self.path) as img:
+            new_size = (int(img.width / 1.5), int(img.height / 1.5))
+            resized = img.resize(new_size, Image.LANCZOS)
+
+            buffer = io.BytesIO()
+            # Preserve original format if known, default to PNG
+            img_format = img.format or "PNG"
+            resized.save(buffer, format=img_format)
+            image = base64.b64encode(buffer.getvalue()).decode()
+
         return image
     
     def ground_truth(self):

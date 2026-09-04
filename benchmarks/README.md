@@ -1,860 +1,543 @@
-# Evaluation — benchmarks and metrics
+# Benchmarks — models and metrics
 
-Evaluates models on drawing and table datasets and compares them using a
-modular library of metrics.
+The `benchmarks` package evaluates models on drawing and table datasets. It
+loads datasets and models through small interfaces, runs model inference,
+saves structured outputs, and computes configured metrics from those outputs
+and the dataset ground truth.
 
-```
-config.yml → datasets + models → benchmark.py → outputs/ → compute_metrics.py → metrics/
+Run the benchmark scripts from `benchmarks/`. They import `datasets.*`,
+`models.*`, and `metrics.*` as local modules and write to the local `results/`
+directory.
+
+```text
+YAML configuration -> datasets + models -> benchmark.py -> model outputs
+                                      -> compute_metrics.py -> metric outputs
 ```
 
 ## Contents
 
-1. Overview
-2. Results
-3. Key files
-4. Datasets
-5. Models
+1. Running benchmarks
+2. Configuration
+3. Results and output layout
+4. Dataset interface
+5. Model interface
 6. Metrics
-7. Tests
-8. Metric details
-9. Related subsystems
+7. Available components
+8. Extending the framework
+9. Tests and limitations
+10. Related components
 
-## 1. Overview
+## 1. Running benchmarks
 
-This framework is used to evaluate different models and compare them using
-the available metrics. It is designed in a modular way, with an abstract
-interface, so that it is easy to extend and flexible to run benchmarks with.
+Install the repository dependencies first. From this directory:
 
-To run a benchmark with the default options (more options are listed in
-section 3.1), you need to be in the `evaluation/benchmarks/` folder and run:
-
-```
+```bash
 python benchmark.py
+python benchmark.py --config path/to/config.yml
+python benchmark.py --test
+python benchmark.py --no_costs
 ```
 
-## 2. Results
+`benchmark.py` creates a uniquely named directory under `results/`, loads each
+configured dataset and model, runs every model on every selected sample, and
+then calls metric computation. `--test` walks through the configured loops
+without model inference or output-dependent metric aggregation. The
+`--no_costs` option avoids querying OpenRouter usage; it cannot be used when
+`cost` is included in the configured metrics.
 
-All results are stored in the `results` folder, where the subfolders are the
-benchmark names. If a benchmark with the same name is run several times, the
-results of later runs are saved under `<original name>_v<run number>`.
+Compute metrics independently when model output files already exist:
 
-Inside a given benchmark's folder there is an `outputs` subfolder (model
-outputs) and a `metrics` subfolder (computed metrics). Both of these folders
-contain a subfolder per dataset, named after the dataset.
-
-- In `outputs`, inside a given dataset's subfolder, there are further
-  subfolders per model (folder name = model name), each containing JSON
-  files with the outputs for every sample in the dataset (file name = sample
-  id).
-- In `metrics`, inside a given dataset's subfolder, there are JSON files with
-  the metrics for each model, where the file name is the model name.
-
-Below is an example results structure for a benchmark:
-
-```
-benchmark_v3/
-├── metrics
-│   ├── custom_test
-│   │   ├── openai_gpt5_4_mini.json
-│   │   └── openai_gpt5_5.json
-│   └── generated
-│       ├── openai_gpt5_4_mini.json
-│       └── openai_gpt5_5.json
-└── outputs
-    ├── custom_test
-    │   ├── openai_gpt5_4_mini
-    │   │   ├── img14.json
-    │   │   └── img4.json
-    │   └── openai_gpt5_5
-    │       ├── img14.json
-    │       └── img4.json
-    └── generated
-        ├── openai_gpt5_4_mini
-        │   ├── sample1.json
-        │   └── sample2.json
-        └── openai_gpt5_5
-            ├── sample1.json
-            └── sample2.json
-```
-
-## 3. Key files
-
-### 3.1 benchmark.py
-
-The main script, which can take any `.yml` file as configuration (more on
-configuration files below). Its responsibilities are:
-
-- loading datasets,
-- loading models,
-- running inference of the models on the datasets,
-- saving the models' output,
-- running the `compute_metrics.py` script (metric computation).
-
-To run this script, you need to be in the same folder as this file and call:
-
-```
-python benchmark.py
-```
-
-There are also additional arguments available:
-
-| argument | meaning |
-|---|---|
-| `--test` | Lets you go through the whole process without model inference (all computations that depend on model output are skipped). |
-| `--config path/to/config.yml` | Lets you choose a configuration file other than the default `default.yml`. |
-
-### 3.2 compute_metrics.py
-
-A script for computing the requested metrics based on model outputs and
-ground truth. It can be run independently of `benchmark.py`, but the model
-outputs must already exist. To run this script, you need to be in the same
-folder as this file and call:
-
-```
+```bash
 python compute_metrics.py --name benchmark_name
+python compute_metrics.py --name benchmark_name --config path/to/config.yml
 ```
 
-Below is an explanation of all the arguments:
+Here `--name` must be the actual directory name under `results/`. The script
+requires the configured output files for every selected sample and model.
 
-| argument | meaning |
+## 2. Configuration
+
+The default configuration file is `default.yml`. Supported keys are:
+
+| key | meaning |
 |---|---|
-| `--name <benchmark_name>` | Required – tells the script which benchmark to compute metrics for. If the benchmark was run multiple times under the same name, you need to provide the automatically generated new name (`<original name>_v<run number>`, as described in section 2), not the original name from the configuration. |
-| `--config path/to/config.yml` | Lets you choose a configuration file other than the default `default.yml`. |
+| `name` | Name for the result directory; defaults to `benchmark`. |
+| `datasets` | Dataset module names, imported from `datasets.<name>`. |
+| `models` | Model module names, imported from `models.<name>`. |
+| `metrics` | Metric module names, imported from `metrics.<name>`. |
+| `samples_cap` | Optional per-dataset sample limit; omitted or negative means no limit. |
 
-### 3.3 default.yml (and other configuration files)
+Dataset modules must expose `DatasetClass`, model modules must expose
+`ModelClass`, and metric modules must expose `Metric`. The current checked-in
+`default.yml` requests the `generated` dataset, the `custom`, Gemini, and
+OpenAI model modules configured there, eight metrics, and a sample cap of 25.
+The small `test_custom.yml` is another configuration for local testing.
 
-`default.yml` is the default configuration file, chosen when no other file
-is provided when running `benchmark.py` or `compute_metrics.py`. Below is the
-list of options that can be set in a configuration file (a parameter is
-required unless stated otherwise):
-
-| option | meaning |
-|---|---|
-| `name` | The benchmark name. |
-| `datasets` | The list of datasets the models should be benchmarked on. |
-| `models` | The list of models to benchmark. |
-| `metrics` | The list of metrics to compute. |
-| `samples_cap` | *(optional)* A cap on the number of samples the model is tested on (counted separately for each dataset). When this parameter is not set, or is set to a negative number, there is no cap. |
-
-All dataset/model/metric names must match exactly the name of the module
-that contains the given element.
-
-Below is an example configuration file structure:
+Example:
 
 ```yaml
 name: "benchmark"
-
 samples_cap: 10
-
 datasets:
 - generated
 - custom_test
-
 models:
-- openai_gpt5_4_mini
-- openai_gpt5_6_Sol
+- custom
 - gemini_3_1_flash_lite
-- gemini_3_5_flash
-
 metrics:
 - bbox_f1
 - bbox_precision
 - bbox_recall
-- features_f1_em_unstructured
-- features_f1_em_localisation
-- features_cer_unstructured
-- features_cer_localisation_padded
-- features_cer_localisation_unpadded
-- custom_DocILE_LIR_f1
-- custom_DocILE_LIR_recall
-- TEDS_S
-- GriTS_Top
 ```
 
-### 3.4 .env
+When `results/<name>/` already exists, `benchmark.py` chooses
+`<name>_v2`, `<name>_v3`, and the next unused suffix. It does not overwrite an
+existing run.
 
-A file with environment variables, e.g. the OpenRouter API key.
+The `.env` file is used for environment variables such as
+`OPENROUTER_API_KEY`. OpenRouter-backed models require the relevant key when
+inference or cost estimation is performed.
 
-## 4. Datasets
+## 3. Results and output layout
 
-This section describes the `datasets` module. It doesn't implement anything
-by itself, but contains all the submodules for each dataset.
+A completed run has this structure:
 
-### 4.1 Dataset base class
+```text
+results/
+  <benchmark-name>/
+    outputs/
+      <dataset>/
+        <model>/<sample-id>.json
+    metrics/
+      <dataset>/<model>.json
+```
 
-The base of every dataset looks like this:
+Each model output is the serialized model response for one sample. Each metric
+file contains one value for every configured metric. Sample IDs are derived
+from the sample ID's final path component.
+
+During inference, an exception for one sample is caught and the sample is
+skipped. The exception text is written beside the expected output as
+`<sample-id>.json.log`; the run then continues with later samples. This is why
+the result table below records Luna as a 14-sample aggregate rather than
+silently treating its missing sample as a valid empty prediction.
+
+The current checked-in result directory is `benchmark_15`, containing
+generated-dataset outputs and metric JSON files for `custom`,
+`gemini_3_1_flash_lite`, `gemini_3_5_flash`, `openai_gpt5_6_Luna`,
+`openai_gpt5_6_Sol`, and `openai_gpt5_6_Terra`. Luna has one fewer output,
+as described in the results section below.
+
+### Benchmark results: `benchmark_15`
+
+The checked-in `benchmark_15` run uses `benchmark_15.yml`: the `generated`
+dataset, 15 samples per dataset, six configured models, and the three bounding
+box, two feature-F1, two feature-CER, and cost metrics listed in that file.
+The result files are under `results/benchmark_15/`.
+
+| model | bbox F1 | bbox precision | bbox recall | feature F1, unstructured | feature F1, localization | CER, unstructured | CER, localization padded | cost |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| custom detector | 0.7474 | 0.9777 | 0.6050 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 |
+| Gemini 3.1 Flash Lite | 0.6453 | 0.6525 | 0.6381 | 0.8352 | 0.5922 | 0.9266 | 0.4598 | 0.0061 |
+| Gemini 3.5 Flash | **0.7664** | 0.7762 | 0.7569 | **0.8615** | **0.6797** | 0.9404 | **0.5856** | 0.0692 |
+| GPT-5.6 Luna | 0.2047 | 0.2066 | 0.2029 | 0.8279 | 0.1869 | 0.9433 | 0.1092 | 0.0171 |
+| GPT-5.6 Terra | 0.4361 | 0.5363 | 0.3674 | 0.7246 | 0.4033 | 0.9449 | 0.2671 | 0.0456 |
+| GPT-5.6 Sol | 0.5504 | 0.5430 | 0.5580 | 0.8529 | 0.5041 | 0.9363 | 0.3697 | 0.0415 |
+
+Values are the exact result JSON values rounded to four decimals. Higher is
+better for the accuracy metrics; `cost` is a recorded mean usage value, so
+lower is cheaper. The results show strong potential for the project: Gemini
+3.5 reaches 0.7664 bounding-box F1 and 0.7569 recall while also reaching
+0.6797 localized exact-match F1, and the local detector reaches 0.9777 box
+precision and 0.7474 box F1. These are results on 15 generated samples, not a
+claim of production performance or generalization to real drawings.
+
+The custom detector's feature F1 and CER values are zero because its benchmark
+adapter returns detected boxes with `text: ""`; it is a detector, not an OCR
+reader. The other models do produce text, which is why their feature metrics
+are nonzero. The semantic metrics therefore demonstrate both the potential of
+the OpenRouter models and the remaining need to combine the detector with text
+reading.
+
+Luna has 14 output JSON files rather than 15: sample `2` was skipped. The
+corresponding `results/benchmark_15/outputs/generated/openai_gpt5_6_Luna/2.json.log`
+contains exactly:
+
+```text
+The output is incomplete due to a max_tokens length limit.
+```
+
+Its metric JSON therefore aggregates 14 Luna outputs. The other five model
+directories contain all 15 sample outputs. This difference must be considered
+when comparing the table.
+
+### Inference comparison on one sample
+
+The following 2x3 comparison uses the same generated drawing and the saved
+sample-0 output from every model in `benchmark_15`. Each panel contains the
+model's predicted bounding boxes; the panel title gives the number of boxes
+in that model's JSON output. The boxes are drawn from the saved coordinates,
+with reversed endpoints normalized only for visualization.
+
+![Six-model inference comparison](assets/inference_comparison_sample_0.png)
+
+*Figure 1. Model predictions for `generated/data/0000_00000102.png`. This is
+a visual comparison of detector/localization output, not a ground-truth
+annotation overlay. The source drawing is the same in all six panels.*
+
+### Why models or samples can be missing
+
+There are three separate ways an expected model/sample can be absent from a
+final dataset or result directory:
+
+1. **Rendering failures.** `pipeline._one()` catches rendering exceptions and
+  returns `{"ok": False, "error": "..."}`. `build_dataset()` excludes those
+  results, so a model that was never successfully rendered cannot appear in
+  the assembled dataset.
+2. **Duplicate output stems.** Before the output-stem fix, inputs such as
+  `folder_a/part.step` and `folder_b/part.step` both staged to
+  `.staging/part.png`. One input could overwrite the other before dataset
+  assembly. This is a historical collision mechanism, not evidence that the
+  corresponding CAD parts were identical.
+3. **Input glob omissions.** The generation CLI processes only files matched
+  by the supplied glob. An input that is not matched never enters the
+  generation pipeline and therefore cannot appear in the dataset.
+
+These causes are distinct from benchmark inference failures. During
+`benchmark.py`, an exception for one model/sample is logged beside the missing
+JSON as `<sample-id>.json.log`, and later samples continue. In `benchmark_15`,
+Luna sample `2` is an example of this fourth, inference-time case.
+
+## 4. Dataset interface
+
+The abstract dataset contract is:
 
 ```python
 class DatasetClassBase(ABC):
     @abstractmethod
-    def __len__(self) -> int:
-        ...
+    def __len__(self) -> int: ...
 
     @abstractmethod
-    def __getitem__(self, key: int) -> SampleClassBase:
-        ...
-```
+    def __getitem__(self, key: int) -> SampleClassBase: ...
 
-Below is an explanation of each function:
-
-- `__len__` – returns the length of the dataset,
-- `__getitem__` – returns the i-th element of the dataset.
-
-### 4.2 Sample base class
-
-The base of every sample class looks like this:
-
-```python
 class SampleClassBase(ABC):
     @abstractmethod
-    def image(self):
-        ...
+    def image(self): ...
 
     @abstractmethod
-    def ground_truth(self) -> FeatureList:
-        ...
+    def ground_truth(self): ...
 ```
 
-Below is an explanation of each function:
+A dataset returns samples whose `image()` is base64 image data and whose
+`ground_truth()` is a drawing `FeatureList` or a table `Table`. The COCO
+loader uses `_annotations.coco.json` and image files in the same directory.
+Drawing features contain `id`, a bounding box, text, category, and confidence.
+Table data uses `Table`, `TableRow`, and `TableCell`; table localization is not
+currently used by the table cell schema.
 
-- `image` – returns the image in base64 format for the given sample,
-- `ground_truth` – returns the ground truth: a `FeatureList` for drawings
-  (section 4.3) and a `Table` for tables (section 4.4).
+The drawing categories are `gdnt`, `roughness`, `radius`, `chamfer`, `bore`,
+`thread`, `dimension`, `note`, `datum`, `leader_note`, `table`, and
+`view_caption`. COCO category names in generated data use the plural detector
+class names documented in the generation and extraction READMEs.
 
-### 4.3 Drawing ground truth: Feature, FeatureList and Category
+## 5. Model interface
 
-The ground truth for drawings is held in a self-defined format (instead of
-the werk24 models used previously). A drawing consists of a list of
-features, where each feature is a labelled text region:
-
-```python
-class Feature(BaseModel):
-    id: int
-    bbox: tuple[Coordinate, Coordinate, Coordinate, Coordinate]
-    text: str = ""
-    category: Category
-    confidence: float
-```
-
-Below is an explanation of each field:
-
-- `id` – the unique id of the feature,
-- `bbox` – the bounding box containing the text (and only text) of the
-  feature; the coordinates are non-negative integers (`Coordinate`),
-- `text` – the whole text displayed by the feature,
-- `category` – the category of the feature, one of the values of the
-  `Category` enum below,
-- `confidence` – the model's confidence that the feature exists (in [0, 1]).
-
-The `Category` enum marks what a given feature is:
-
-- `gdnt` – feature control frames,
-- `roughness` – surface-texture symbols,
-- `radius` – fillet / corner radius notes,
-- `chamfer` – chamfer and countersink callouts,
-- `bore` – hole callouts,
-- `thread` – thread specifications,
-- `dimension` – linear, aligned, angular, diameter,
-- `note` – the paragraph block (e.g. `NOTES:`, `UNLESS OTHERWISE
-  SPECIFIED`),
-- `datum` – boxed datum letters with their triangle,
-- `leader_note` – a short string on a leader (e.g. `THICKNESS 12`, `BODY 2:
-  70 X 14`),
-- `table` – any ruled block of fields,
-- `view_caption` – the caption under a view (e.g. `TOP`, `VIEW A`,
-  `ITEM 3`).
-
-A sample's ground truth is a `FeatureList`, which behaves like a list of
-features:
-
-```python
-class FeatureList(BaseModel):
-    feature_list: list[Feature]
-
-    def __getitem__(self, key):
-        return self.feature_list[key]
-
-    def __len__(self):
-        return len(self.feature_list)
-```
-
-### 4.4 Table models
-
-Three pydantic models are defined for tables: `TableCell`, `TableRow`, and
-`Table`, arranged in that hierarchy. `Table` and `TableRow` behave basically
-like a list, while `TableCell` is more elaborate:
-
-```python
-class TableCell(BaseModel):
-    score: Optional[float] = None
-    text: Optional[str] = None
-    fieldtype: Optional[str] = None
-    line_item_id: int
-    colspan: int = 1
-    rowspan: int = 1
-```
-
-Cell localisation (bounding box, page) is currently not used.
-
-Note that table support in this framework is only partially implemented: the
-table schema (the models below) and the table metrics (section 8.2) exist,
-but there is no fully working table dataset yet.
-
-Below is an explanation of each field:
-
-- `score` – the probability, assigned by the model, that the cell actually
-  exists,
-- `text` – the cell's content,
-- `fieldtype` – the cell's type. Currently a string, though the literature
-  defines specific cell types, so this should probably become an Enum in the
-  future – worth considering,
-- `line_item_id` – the id of the row the cell belongs to,
-- `colspan` – how many columns the cell spans (cell width),
-- `rowspan` – how many rows the cell spans (cell height).
-
-### 4.5 Implementing your own dataset module
-
-To create your own module, the simplest approach is to import
-`DatasetClassBase` and `SampleClassBase` from the `datasets.base` module,
-then write a `DatasetClass` and a `SampleClass` (the names must match
-exactly, otherwise there will be an import problem when running the
-benchmark) that inherit from `DatasetClassBase` and `SampleClassBase`
-respectively. Don't forget to implement the abstract methods for these
-classes – if you do, trying to run a benchmark with that dataset should fail
-with an error.
-
-It's worth noting that a `datasets.custom` module is already implemented
-(mainly for drawings). It loads its data in the COCO format, so you can
-create a folder for your module, place the annotations in
-`_annotations.coco.json`, and inherit your own `DatasetClass` and
-`SampleClass` from the ones in `datasets.custom`, as in the template below:
-
-```python
-class SampleClass(SampleClassBase):
-    def __init__(self, id, coco, dirname):
-        self.img_info = coco.loadImgs(coco.getImgIds()[int(id)])[0]
-        ann_ids = coco.getAnnIds(imgIds=self.img_info['id'])
-        self.anns = FeatureList.model_validate({"feature_list": coco.loadAnns(ann_ids)})
-        self.path = dirname / self.img_info["file_name"]
-
-    def image(self):
-        image = base64.b64encode(self.path.read_bytes()).decode()
-        return image
-
-    def ground_truth(self):
-        return self.anns
-
-class DatasetClass(DatasetClassBase):
-    def __init__(self) -> None:
-        super().__init__()
-        dirname = Path(f"{os.path.dirname(os.path.abspath(__file__))}")
-        coco = COCO(dirname / '_annotations.coco.json')
-        img_ids = coco.getImgIds()
-        self.samples = [SampleClass(i, coco, dirname) for i in range(len(img_ids))]
-
-    def __len__(self) -> int:
-        return len(self.samples)
-
-    def __getitem__(self, key : int) -> SampleClassBase:
-        return self.samples[key]
-```
-
-The data is laid out in the COCO style: a single `_annotations.coco.json`
-file with all annotations, and the images it refers to in the same folder,
-as shown in the diagram below:
-
-```
-data
-├── _annotations.coco.json
-├── image1.png
-├── image2.png
-...
-```
-
-`DatasetClass` loads the annotations with `pycocotools` and builds one
-`SampleClass` per image; each sample's `ground_truth()` is the
-`FeatureList` of that image's annotations, and `image()` returns the image
-in base64 form.
-
-### 4.6 List of available (fully working) datasets
-
-- `custom_test`
-- `generated`
-- `drawing_testing_dataset` – a dataset with a single sample, used to test
-  the drawing metrics
-- `table_recognition_testing_dataset` – a dataset with a single sample, used
-  to test the table metrics
-
-## 5. Models
-
-This section describes the `models` module. It doesn't implement anything by
-itself, but contains all the submodules for each model.
-
-### 5.1 Model base class
-
-The base of every model looks like this:
+Models implement:
 
 ```python
 class ModelBase(ABC):
     @abstractmethod
-    def forward(self, image:str) -> dict[str,tuple[str,str]]:
+    def forward(self, image: str) -> dict:
         ...
 ```
 
-where `forward` is the given model's inference function, taking an image in
-base64 form and returning a JSON object.
+The OpenRouter base model handles API inference and image scaling for the
+configured providers. Model outputs are expected to be structured data that
+can be consumed by the selected metrics. The local `custom` model uses the
+extraction detector; OpenRouter-backed modules provide the configured Gemini
+and OpenAI models.
 
-### 5.2 OpenRouter models
+### OpenRouter prompt and coordinate contract
 
-The `models.base.openrouter` module implements a `ModelClass` that fully
-handles inference for OpenRouter models. You just need to inherit from this
-class and set `self.name` to the OpenRouter model name in the constructor.
-If a given model needs a more advanced way of scaling images, you should
-implement a `factor` function, which should return the number that the
-coordinates returned by the model are multiplied by, depending on the
-image's dimensions (Gemini's scaling approach is implemented by default).
-Below is an example implementation of the class:
+The shared prompt in `models/base/prompts.py` requires JSON-only structured
+output with exactly `id`, `bbox`, `text`, `category`, and `confidence`. It asks
+the model to inspect all views and annotation types, make a second pass for
+small or crowded marks, preserve visible engineering notation, and avoid
+inventing values from geometry. It also defines dataset-specific conventions:
+one `notes` feature per rendered note line, one `tables` feature for a complete
+ruled block, canonical `DATUM <LETTER>` text, complete view captions, and
+text-only boxes except for table blocks.
 
-```python
-from models.base.openrouter import ModelClass as ModelClassBase
+The prompt deliberately specifies:
 
-class ModelClass(ModelClassBase):
-    def __init__(self, MAX_TOKENS = 100000):
-        super().__init__(MAX_TOKENS)
-        self.name:str = "openai/gpt-5.4-mini"
-
-    def factor(self, width: int, height: int):
-        ...
+```text
+bbox = [ymin, xmin, ymax, xmax]
 ```
 
-### 5.3 Implementing your own module
+with every coordinate normalized to `[0, 1000]`, origin at the top-left, x
+increasing to the right, and y increasing downward. `openrouter.py` swaps this
+to `[xmin, ymin, xmax, ymax]` and scales it to original image pixels. This
+single output structure makes parsing and metric loading consistent, but it
+can bias the comparison: Gemini models have been trained on similar normalized
+coordinate conventions, while the y-first order and normalization may be less
+natural for other models. Results should therefore be interpreted as model
+performance under this prompt contract, not as a completely prompt-neutral
+ranking.
 
-To create your own module with a model, just inherit from `ModelBase` in the
-`models.base` module and implement the `forward` function, which takes an
-image in base64 form and returns the model's output, ideally as a pydantic
-model.
+The prompt also requires a complete visible text transcription, exact plural
+category strings, sequential non-negative IDs, confidence in `[0,1]`, and
+JSON without surrounding prose. It distinguishes dimensions, bores, radii,
+chamfers, and threads by the meaning of the printed annotation rather than
+only by visual appearance. It explicitly forbids deriving a printed value
+from measured geometry or inventing unreadable annotations.
 
-### 5.4 List of available (fully working) models
+### Image resizing and restoration
 
-- `gemini_3_1_flash_lite`
-- `gemini_3_5_flash`
-- `openai_gpt5_4_mini`
-- `openai_gpt5_5`
-- `openai_gpt5_6_Sol`
+`datasets/custom/SampleClass.image()` downsizes every image by `1.5` using
+LANCZOS before sending it to a model. This avoids provider/model image-size
+limits for large drawings. Ground-truth boxes remain in original pixels, so
+`ModelClassBase` multiplies the decoded image dimensions by `1.5` before
+converting model coordinates back to the original image system.
+
+The model variants also carry provider-size settings: Luna uses
+`max_chunks=10000` and `max_dim=6000`, Terra uses `max_chunks=1536` and
+`max_dim=2048`, and Sol inherits Terra's implementation but sets both limits
+very high. The active base implementation sends the resized image and uses
+the common 1,000-coordinate prompt contract.
+
+The model-specific wrappers select the following OpenRouter identifiers:
+`google/gemini-3.1-flash-lite`, `google/gemini-3.5-flash`,
+`openai/gpt-5.6-luna`, `openai/gpt-5.6-terra`, and
+`openai/gpt-5.6-sol`. All OpenRouter calls use temperature `0` and the
+Instructor JSON response mode with the shared `FeatureList` schema.
 
 ## 6. Metrics
 
-This section describes the `metrics` module. It doesn't implement anything
-by itself, but contains all the submodules for each metric.
+Every metric implements `aggregate(output, target)`, `value()`, and `clear()`;
+`forward()` aggregates one output/target pair and returns the current aggregate
+value. Drawing COCO boxes are converted from `[x, y, width, height]` into
+corner coordinates before drawing metrics use them. Drawing metric matching
+uses the base threshold `0.5`.
 
-### 6.1 Metric base class
+### Drawing metrics
 
-The base of every metric looks like this:
+| metric | meaning and implementation |
+|---|---|
+| `bbox_precision` | Hungarian one-to-one box matching by IoU; true positives divided by predicted boxes. Text and category are ignored. |
+| `bbox_recall` | The same IoU matching; true positives divided by ground-truth boxes. |
+| `bbox_f1` | Harmonic mean of the aggregate box precision and recall. Empty prediction and target are treated as a perfect match. |
+| `features_f1_em_unstructured` | Hungarian feature matching where text and category must exactly match; location is ignored. |
+| `features_f1_em_localisation` | Exact text and category matching constrained by IoU greater than `0.5`. |
+| `features_cer_unstructured` | Text-only Hungarian matching using normalized edit similarity; category and location are ignored. The result is one minus the weighted normalized edit error. |
+| `features_cer_localisation_padded` | IoU-based matching; unmatched predictions and targets receive full error, and matched text is scored by normalized edit distance. |
+| `cost` | Mean `FeatureList.cost` supplied by model outputs; it is a usage-cost field, not an accuracy metric. |
 
-```python
-class MetricBase(ABC):
-    def __init__(self):
-        super().__init__()
-        self.eps = 1e-6
-        self.threshold = 0.5
+The base text normalization strips surrounding and repeated whitespace, makes
+text uppercase, converts decimal commas to periods, and normalizes several
+symbols before relevant comparisons. The metric implementations use their
+specific matching rules above; they do not all evaluate the same output
+schema.
 
-        self.clear()
+The feature F1 metrics use one-to-one Hungarian matching. Unstructured F1
+ignores location and requires exact text and category; localized F1
+also requires IoU above `0.5`. The padded CER metric penalizes unmatched
+predictions and targets with full error and compares matched text by normalized
+edit distance, returning one minus the weighted error. The `cost` metric
+averages the `FeatureList.cost` field; `benchmark.py` fills that field from
+before/after OpenRouter key-usage values unless `--no_costs` is selected.
 
-    @abstractmethod
-    def aggregate(self, output, target):
-        ...
+#### `bbox_precision`
 
-    @abstractmethod
-    def value(self):
-        ...
+For every sample, predicted and target boxes are converted to arrays and their
+pairwise IoUs are computed. Hungarian one-to-one matching maximizes the number
+of pairs whose IoU is greater than `0.5`; category and text are deliberately
+ignored. True positives and false positives are accumulated over all samples,
+and the final value is $TP / \max(TP + FP, 1)$. This measures whether returned
+regions are plausible detections, not whether their classes or text are right.
 
-    @abstractmethod
-    def clear(self):
-        ...
+#### `bbox_recall`
 
-    def forward(self, output, target):
-        self.aggregate(output, target)
-        return self.value()
+This uses the same IoU threshold and Hungarian matching as precision, but
+accumulates true positives and false negatives. The final value is
+$TP / \max(TP + FN, 1)$, so it measures how much of the ground-truth
+annotation inventory was found. A prediction can count here even with the
+wrong category or empty text.
+
+#### `bbox_f1`
+
+This is the harmonic mean of the aggregate box precision and recall. It uses
+the same one-to-one IoU matching and threshold. When there are no predicted or
+target boxes across the aggregate, the implementation returns `1`; otherwise
+the usual F1 formula is used with denominators protected against division by
+zero.
+
+#### `features_f1_em_unstructured`
+
+Each predicted feature is compared with each target feature using exact text
+and exact category equality as stored in the feature objects. Location is ignored. Hungarian matching maximizes
+the number of exact pairs, after which true positives, false positives, and
+false negatives are accumulated across samples. It is therefore a strict
+semantic extraction score without a localization requirement. Empty output and
+target together produce a perfect score.
+
+#### `features_f1_em_localisation`
+
+This is the strict semantic-localization metric. A pair is correct only when
+its box IoU is greater than `0.5`, its text is exactly equal, and its category
+is exactly equal as stored. Hungarian matching maximizes valid pairs; unmatched features
+become false positives or false negatives. It tests whether the system both
+found the right region and interpreted it correctly.
+
+#### `features_cer_unstructured`
+
+For every predicted/target pair, the implementation computes normalized
+Levenshtein distance between the two text strings and uses Hungarian matching
+to choose a minimum-cost pairing. Category and location are ignored. The
+aggregate score is one minus the weighted mean normalized edit error, so
+higher is better and exact text yields `1`. This metric measures text
+similarity independent of whether the feature was found in the right place.
+
+#### `features_cer_localisation_padded`
+
+Predicted and target boxes are paired by Hungarian matching on an IoU-derived
+matrix. Pairs at or below the `0.5` threshold contribute two full errors, and
+unmatched predictions and targets each contribute one full error. Valid pairs
+contribute normalized Levenshtein distance between their texts. The returned
+score is one minus the weighted mean error. This padding makes missed and
+hallucinated annotations affect the score instead of evaluating only text from
+successful pairs.
+
+#### `cost`
+
+The cost metric averages the optional `FeatureList.cost` value supplied in
+each model output. The benchmark runner populates this field from the change
+in OpenRouter key usage before and after a request. It is not a quality score
+and is not calculated from tokens or latency independently; local detector
+outputs normally retain the default `0.0`.
+
+#### `TEDS_S`
+
+This table metric builds a row-level edit-distance comparison. Cells are
+considered equal when `fieldtype`, `colspan`, and `rowspan` match; cell text is
+not compared by this implementation. A normalized tree-edit-style distance is
+computed over rows and cells and subtracted from `1`. The metric requires both
+output and target to be `Table` objects and averages the per-sample values.
+
+#### `custom_DocILE_LIR_f1`
+
+Rows are paired with Hungarian matching using the longest common subsequence
+of equal cells. A cell is equal when its text, `colspan`, and `rowspan` match;
+`fieldtype` is ignored. The matched cell count becomes true positives, while
+unmatched output and target cells become false positives and false negatives.
+The aggregate node precision and recall are combined into F1. Both output and
+target must be structured `Table` objects.
+
+#### `custom_DocILE_LIR_recall`
+
+This uses the same row LCS and cell matching as the custom LIR F1 metric, but
+accumulates only true positives and false negatives and returns recall. It is
+useful when missing table cells matter more than extra predicted cells.
+
+#### `GriTS_Top`
+
+Tables are expanded into dense grids that encode each cell's relative position
+and span. Invalid grids, overlapping cells, or non-dense rows return `0` for
+that sample. Otherwise, dynamic programming aligns rows and columns using
+IoU-like grid-cell similarity, then the matched grid similarity is normalized
+by the total grid area. The implementation evaluates topology and spans, not
+cell text.
+
+The table implementations intentionally operate on structured `Table` output,
+not drawing `FeatureList` output. The checked-in table fixtures exercise this
+path, but there is no complete production table dataset in the benchmark
+directory.
+
+### Table metrics
+
+| metric | meaning and implementation |
+|---|---|
+| `TEDS_S` | Structural table similarity. Rows are matched using row edit distance; cells compare `fieldtype`, `colspan`, and `rowspan`, while cell text is ignored. The normalized distance is subtracted from 1. |
+| `custom_DocILE_LIR_f1` | Row-level LCS matching followed by cell matching using text, colspan, and rowspan; computes node-level precision, recall, and F1. `fieldtype` is ignored. |
+| `custom_DocILE_LIR_recall` | The same custom row and cell matching as the F1 metric, returning recall. |
+| `GriTS_Top` | Builds dense table grids, aligns rows and columns, and compares cell topology by IoU. Invalid or non-dense grids return 0. |
+
+Table support is exercised by the repository fixtures and table metrics, but
+there is no complete production table dataset in the checked-in benchmark
+data. `features_cer_localisation_unpadded` appears in an old example but has
+no current metric module and should not be configured.
+
+## 7. Available components
+
+Current dataset modules include:
+
+- `generated`
+- `custom`
+- `custom_test`
+- `drawing_testing_dataset`
+- `table_recognition_testing_dataset`
+
+Current model modules include `custom`, `gemini_3_1_flash_lite`,
+`gemini_3_5_flash`, `openai_gpt5_6_Luna`, `openai_gpt5_6_Sol`, and
+`openai_gpt5_6_Terra`.
+
+Current metric modules are the 12 metrics listed in section 6.
+
+The checked-in generated dataset adapter is a thin wrapper around the custom
+COCO loader and reads `datasets/generated/data/_annotations.coco.json`. The
+test drawing and table adapters provide fixtures for the metric tests; the
+table testing adapter intentionally has no image because table metrics operate
+on structured table objects.
+
+## 8. Extending the framework
+
+To add a dataset, implement `DatasetClassBase` and its sample contract, then
+place a module with `DatasetClass` under `datasets/`. To add a model, inherit
+from `ModelBase` and implement `forward()`. To add a metric, inherit from
+`MetricBase` and implement `aggregate()`, `value()`, and `clear()`.
+
+The existing `custom` dataset demonstrates COCO loading: one manifest is read,
+one sample is created per image, and annotations are converted to the drawing
+feature schema. The base metric helpers include text normalization, longest
+common subsequence, normalized edit similarity, and label matching.
+
+## 9. Tests and limitations
+
+Run the benchmark tests from the repository root:
+
+```bash
+python -m pytest benchmarks/tests -q
 ```
 
-where:
-
-- `aggregate` – lets you fold a sample into the metric's running computation
-  (`output` is the model's output, `target` is the sample object),
-- `value` – returns the metric's value computed from everything aggregated
-  so far,
-- `clear` – clears all internal state, "forgetting" previously aggregated
-  samples,
-- `forward` – takes a model output (`output`) and a sample (`target`), adds
-  them to the aggregated values, and returns the metric value computed from
-  everything aggregated so far.
-
-The `metrics.base` module also provides a few helper functions used by the
-drawing metrics: `norm` (normalises a feature label for comparison), `ned`
-(normalised edit distance), `lcs` (longest common subsequence of two
-strings), `cost` (a similarity score combining LCS and NED), and
-`match_labels` (pairs labels with candidates, allowing exact and partial
-matches).
-
-### 6.2 Implementing your own metric
-
-To create your own metric module, just inherit from `MetricBase` in the
-`metrics.base` module and implement the `aggregate`, `value`, and `clear`
-functions as described in section 6.1.
-
-### 6.3 List of available (fully working) metrics
-
-- `bbox_f1`
-- `bbox_precision`
-- `bbox_recall`
-- `custom_DocILE_LIR_f1`
-- `custom_DocILE_LIR_recall`
-- `features_cer_localisation_padded`
-- `features_cer_localisation_unpadded`
-- `features_cer_unstructured`
-- `features_f1_em_localisation`
-- `features_f1_em_unstructured`
-- `GriTS_Top`
-- `TEDS_S`
-
-A fairly detailed description of every metric is given in section 8 below.
-
-## 7. Tests
-
-Tests are written using `pytest`. All test-related files live in `tests/`.
-Currently the tests only check that each metric is computed correctly.
-Ground truth for the tests lives in the `datasets.drawing_testing_dataset`
-and `datasets.table_recognition_testing_dataset` modules (for drawings and
-tables respectively), and in the `testing_data_drawings.json` and
-`testing_data_tables.json` files (also respectively for drawings and
-tables).
-
-## 8. Metric details
-
-### 8.1 Drawing metrics
-
-All drawing metrics operate on the drawing ground truth described in section
-4.3 (the `Feature`/`FeatureList` models). There are other output formats in
-use, though (potentially better ones), for which we don't have metrics yet.
-
-#### 8.1.1 Drawing metric categories
-
-**Localisation metrics**
-
-Localisation metrics assess how well a model can determine **where** a given
-annotation is. They are not as important as semantic-localisation or
-semantic metrics, but can be useful when location is needed at later stages
-of the pipeline.
-
-**Semantic metrics**
-
-Semantic metrics assess how well a model can extract **information** from
-the image (the content itself, without looking at location). These are the
-most important metrics (or tied with semantic-localisation metrics), since
-what matters most is how well the model performs at data extraction.
-
-**Semantic-localisation metrics**
-
-Semantic-localisation metrics combine semantic and localisation evaluation —
-content is only checked based on what was paired by location. They let you
-verify that the model reads content correctly in the places it correctly
-located itself. This is the second most important type of metric (or tied
-with semantic metrics), depending on whether location will be useful in
-later pipeline stages.
-
-**Hallucination/detection metrics**
-
-Hallucination/detection metrics give a single number for how well the model
-finds objects and how many hallucinations it produces in doing so (i.e.
-cases where the model claims something exists when it doesn't). They're
-useful for a general assessment of the model's detection ability.
-
-#### 8.1.2 bounding boxes (the location where a given annotation is)
-
-The `bbox_*` metrics replaced the old balloon-based location metrics. Instead
-of pairing annotations by distance, they work on the annotations' bounding
-boxes and pair them by IoU (intersection over union).
-
-**precision**
-
-**Category:** hallucination/detection metric.
-
-**What it measures:** precision for bounding-box detection — the fraction of
-the model's detected boxes that match a ground-truth box.
-
-**How it works:** the generated and ground-truth boxes are paired one-to-one
-with the Hungarian algorithm, based on the IoU of the boxes. A pair counts as
-a true positive if the IoU is above a set threshold. Precision is the number
-of true positives divided by the total number of generated boxes
-(TP / (TP + FP)), accumulated across all samples.
-
-**Value range:** [0, 1] — higher is better.
-
-**recall**
-
-**Category:** hallucination/detection metric.
-
-**What it measures:** recall for bounding-box detection — the fraction of
-ground-truth boxes that the model correctly found.
-
-**How it works:** the pairing is identical to precision (Hungarian algorithm
-on box IoU, pairs above a set threshold count as true positives). Recall is
-the number of true positives divided by the total number of ground-truth
-boxes (TP / (TP + FN)), accumulated across all samples.
-
-**Value range:** [0, 1] — higher is better.
-
-**f1**
-
-**Category:** hallucination/detection metric.
-
-**What it measures:** the f1 score, i.e. a combination of detection
-performance and hallucination level in a single number.
-
-**How it works:** the generated and ground-truth boxes are paired one-to-one
-so as to maximise the number of matched pairs (Hungarian algorithm), where a
-pair matches if the IoU of the two boxes is above a set threshold. Based on
-this we count: true positives (number of pairs), false positives (generated,
-unpaired boxes) and false negatives (unpaired ground-truth boxes) —
-accumulated across all samples — from which f1 is finally computed using the
-standard formula.
-
-**Value range:** [0, 1] — higher is better. If the accumulated TP, FP and FN
-are all 0, the metric value is 1 (the model had no opportunity to make a
-mistake).
-
-#### 8.1.3 features (extracted data/dimensions together with their label and category)
-
-**f1 (unstructured)**
-
-**Category:** hallucination/detection metric and semantic metric.
-
-**What it measures:** the f1 score, i.e. a combination of detection
-performance, hallucination level, and correctness of the extracted content
-in a single number.
-
-**How it works:** two features are paired one-to-one if and only if their
-label (the extracted text) and category are identical (exact match) — the
-Hungarian algorithm is used to find the pairing that maximises the number of
-matched pairs. We count TP (number of pairs), FP (generated, unpaired
-features) and FN (unpaired ground-truth features), accumulated across all
-samples, from which f1 is computed using the standard formula.
-
-**Value range:** [0, 1] — higher is better. If the accumulated TP, FP and FN
-are all 0, the metric value is 1.
-
-**cer (unstructured)**
-
-**Category:** semantic metric.
-
-**What it measures:** the mean character error rate (CER), i.e. the
-normalised edit distance between the labels of paired features — how closely
-the extracted text resembles the correct one. The reported value is 1 minus
-the mean CER, so identical labels give 1 and completely different labels
-give 0.
-
-**How it works:** features are paired one-to-one so as to minimise the sum of
-normalised edit distances between labels (Hungarian algorithm). Unpaired
-features (when there are too many on one side) are skipped.
-
-**Value range:** [0, 1] — higher is better (1 means identical labels, 0
-means completely different).
-
-**f1 (localisation)**
-
-**Category:** hallucination/detection metric and semantic-localisation
-metric.
-
-**What it measures:** the f1 score, i.e. a combination of detection
-performance and hallucination level in a single number, where the candidate
-pair for comparison is chosen based on location.
-
-**How it works:** first, candidate pairs of ground-truth and generated
-features are formed based on location — the Hungarian algorithm is applied to
-the IoU (intersection over union) of the features' bounding boxes. A pair is
-a true positive if the IoU exceeds a set threshold and the features' labels
-(the extracted text) and categories are identical. We count TP (number of
-pairs), FP (generated, unpaired features) and FN (unpaired ground-truth
-features), from which f1 is computed.
-
-**Value range:** [0, 1] — higher is better. Pairing by location here is only
-used to decide which features to compare — the metric value itself reflects
-detection performance and content correctness, not localisation quality.
-
-**cer (localisation, padded)**
-
-**Category:** semantic-localisation metric and hallucination/detection
-metric.
-
-**What it measures:** like the unpadded variant, the mean character error
-rate between the labels of features paired by location, with the difference
-that unpaired features are also penalised.
-
-**How it works:** the pairing is identical to the unpadded variant, but
-features that could not be paired are not skipped — each unpaired feature
-contributes the maximum error (1) to the average. The metric therefore also
-penalises detection mistakes (missing or hallucinated features).
-
-**Value range:** [0, 1] — higher is better.
-
-### 8.2 Table metrics
-
-#### 8.2.1 Table metric categories
-
-**Structural metrics**
-
-Structural metrics assess how correctly the model reproduces the table's
-structure (e.g. the split into rows and cells), regardless of whether the
-content read within the cells is correct. They're useful for verifying that
-the model handles table layout recognition well.
-
-**Semantic-structural metrics**
-
-Semantic-structural metrics combine an assessment of table structure with an
-assessment of content correctness — cells are matched partly based on
-structure (e.g. row membership), and then content agreement is checked. They
-let you verify that the model reads data correctly in the context of its
-correct placement within the table's structure.
-
-#### 8.2.2 TEDS-S
-
-**Category:** structural metric.
-
-**What it measures:** the agreement of table structure (a tree made of rows
-and cells) between the generated and ground-truth table.
-
-**How it works:** an implementation of the TEDS-S metric from
-[this paper](https://arxiv.org/abs/1911.10683), considering only `tr` and
-`td` nodes (rows and cells). Cells are compared structurally — two cells are
-the same if and only if their field type, colspan and rowspan are identical
-(cell content is not taken into account). No ready-made implementation could
-be found for the tree-edit-distance part of the metric, so the current
-approach is custom-built — created by Franciszek Zachuta based on dynamic
-programming. The resulting tree edit distance is normalised by the maximum
-number of nodes in either table, and the metric value is 1 minus that
-normalised distance.
-
-**Value range:** [0, 1] — higher is better.
-
-#### 8.2.3 custom DocILE-LIR f1
-
-**Category:** semantic-structural metric.
-
-**What it measures:** the f1 score for table cell matching, combining
-structural correctness (row membership) and content correctness.
-
-**How it works:** an implementation of the DocILE LIR metric paradigm from
-[this paper](https://arxiv.org/abs/2302.05658), with some modifications.
-First, for every pair of rows (ground truth and generated), the number of
-matched cells is computed using LCS (Longest Common Subsequence) — two cells
-are considered the same if and only if their text (content), colspan and
-rowspan are exactly identical (field type is not compared). Then, based on
-these counts, the best row assignment is found, maximising the total number
-of matched cells. Finally we count TP (number of matched cells), FP
-(generated, unmatched cells) and FN (unmatched ground-truth cells), from
-which f1 is computed.
-
-**Value range:** [0, 1] — higher is better.
-
-#### 8.2.4 custom DocILE-LIR recall
-
-**Category:** semantic-structural metric.
-
-**What it measures:** recall for table cell matching — what fraction of the
-ground-truth cells were correctly found.
-
-**How it works:** analogous to custom DocILE-LIR f1 — for every pair of
-rows, the number of matched cells is computed using LCS (cells are the same
-if and only if text, colspan and rowspan are identical — field type is not
-compared), and then the best row assignment maximising the total number of
-matched cells is found. Finally we count TP (number of matched cells) and FN
-(unmatched ground-truth cells), from which recall is computed. Unlike f1,
-this metric does not account for hallucinations (false positives).
-
-**Value range:** [0, 1] — higher is better.
-
-#### 8.2.5 GriTS-Top
-
-**Category:** structural metric.
-
-**What it measures:** the agreement of table topology (a grid-based
-structure) between the generated and ground-truth table, without assessing
-cell content.
-
-**How it works:** an implementation of the topological GriTS metric from
-[this paper](https://arxiv.org/abs/2203.12555). Rows and columns are matched
-between the two grids, and the similarity of each pair of cells is computed
-as the IoU (intersection over union) of their bounding boxes; the total
-similarity is normalised by the number of cells. If the predicted (or
-ground-truth) table cannot be converted into the grid form described in the
-paper, the similarity is returned as 0.
-
-**Value range:** [0, 1] — higher is better.
-
-### 8.3 Algorithms used in metric computation
-
-Below is a brief, practical explanation of three algorithms that come up
-repeatedly in the metric descriptions above.
-
-**Hungarian algorithm**
-
-**What it's for:** finding the best possible one-to-one pairing between two
-sets of elements, so that the sum (or mean) "cost" of all pairs is as small
-as possible.
-
-**How it works in practice:** imagine we have 3 generated boxes and 3
-ground-truth boxes. For every possible pair (generated, ground truth) we
-can compute the distance between them — this is that pair's "cost". The
-Hungarian algorithm checks all sensible pairing combinations (without brute
-forcing every single possibility, but in a smart, fast way) and picks the
-set of pairs where each element is paired at most once and the total cost
-of all pairs is the smallest possible.
-
-**Example:** we have boxes A1, A2 (generated) and B1, B2 (ground truth).
-Distances: A1-B1 = 10, A1-B2 = 100, A2-B1 = 90, A2-B2 = 20. Pairing them "in
-order" (A1-B1, A2-B2) gives a total of 10+20=30. Pairing them crosswise
-(A1-B2, A2-B1) would give 100+90=190. The Hungarian algorithm picks the
-first pairing, since it has the lower total cost.
-
-**Edit distance / Levenshtein distance**
-
-**What it's for:** measuring how different two character strings (e.g. two
-labels/texts) are from each other.
-
-**How it works in practice:** it counts the minimum number of single
-operations (inserting a character, deleting a character, substituting one
-character for another) needed to turn one text into the other. The fewer
-operations needed, the more similar the texts are. "Normalized" Levenshtein
-distance means this result is additionally divided by the text length, so
-the result falls in the [0, 1] range regardless of whether short or long
-texts are being compared.
-
-**Example:** to turn "kot" into "kod", you only need to substitute one
-letter (t → d) — the edit distance is 1. To turn "kot" into "psy", you need
-to substitute all 3 letters — the edit distance is 3.
-
-**Longest Common Subsequence (LCS)**
-
-**What it's for:** finding the largest set of elements that occur in the
-same order in both compared sequences (e.g. in two table rows), even if
-other, non-matching elements sit between them.
-
-**How it works in practice:** unlike a plain element-by-element check, LCS
-allows skipping elements that don't match, and looks for the longest
-possible "path" of common elements that keep their relative order.
-
-**Example:** the ground-truth row has cells [A, B, C, D], and the generated
-row has cells [A, X, C, D, Y]. Although they aren't identical, the common
-subsequence is [A, C, D] (length 3) — these elements appear in the same
-order in both rows, and X and Y are simply skipped as non-matching.
-
-## 9. Related subsystems
-
-The repository also contains two related subsystems, each with its own
-README:
-
-- `generation/` – **AutoDraft**, which turns STEP / IGES / BREP models into
-  dimensioned 2D drawings rendered as PNG with COCO detection labels. See
-  `generation/README.md`.
-- `extraction/` – an RF-DETR object detector trained on AutoDraft's output
-  layout. See `extraction/README.md`.
+The tests cover drawing metrics in `test_drawing_metrics.py` and table metrics
+in `test_table_metrics.py`, using the JSON fixtures in `benchmarks/tests/`.
+Benchmark execution depends on available model weights, dataset manifests,
+network/API access for OpenRouter models, and correctly configured environment
+variables.
+
+## 10. Related components
+
+- [Generation](../generation/README.md) creates the COCO drawing datasets.
+- [Extraction](../extraction/README.md) trains and runs an annotation detector.
+- [Repository overview](../README.md) summarizes the complete workflow.
+
+## 11. Files and external artifacts
+
+The relevant benchmark tree is:
+
+```text
+benchmarks/
+  benchmark.py          run inference and metric computation
+  compute_metrics.py    recompute metrics from saved outputs
+  default.yml           default benchmark configuration
+  benchmark_15.yml      configuration for the documented 15-sample run
+  datasets/             dataset adapters and COCO fixtures
+  models/               detector and OpenRouter model adapters
+  metrics/              drawing, table, and cost metrics
+  tests/                metric tests and test fixtures
+  results/              saved model outputs and metric JSON files
+```
+
+Artifacts that cannot be included in the repository are available on the
+shared drive:
+
+<https://drive.google.com/drive/folders/1rHwoiXBxIVY4zxsPVJP3d27EiWnvynUY>
