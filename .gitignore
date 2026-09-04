@@ -1,7 +1,4 @@
-extraction/__pycache__
-benchmarks/__pycache__
-generation/__pycache__
-generation/cli/__pycache__
+__pycache__
 models/*
 dataset
 output
