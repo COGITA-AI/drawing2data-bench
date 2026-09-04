@@ -145,6 +145,7 @@ The result files are under `results/benchmark_15/`.
 | GPT-5.6 Sol | 0.5504 | 0.5430 | 0.5580 | 0.8529 | 0.5041 | 0.9363 | 0.3697 | 0.0830 |
 
  > The real average cost for GPT-5.6 Sol was 0.0415, but there were promotion, so the table accounts for that.
+ 
 Values are the exact result JSON values rounded to four decimals. Higher is
 better for the accuracy metrics; `cost` is a recorded mean usage value, so
 lower is cheaper. The results show strong potential for the project: Gemini
