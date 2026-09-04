@@ -12,6 +12,13 @@ STEP → feature recognition → view selection → OCCT hidden-line
 The PNG is the only rendered output, so the image and the labels cannot
 disagree.
 
+![Generated drawing with COCO boxes](assets/generated_sheet_with_boxes.png)
+
+*Figure 1. A checked-in test drawing with its generated COCO annotation boxes
+outlined in red. The source image is `dataset/test/0000_00000102.png`; the
+overlay is produced from the corresponding manifest, not from a model
+prediction.*
+
 ## Contents
 
 1. Run
@@ -27,6 +34,7 @@ disagree.
 11. Dataset check
 12. Layout
 13. Known limits
+14. Related components
 
 ## 1. Run
 
@@ -50,6 +58,12 @@ rec.annotation_counts          # {'dimension': 14, 'bore': 3, ...}
 
 batch(glob.glob("rfq/*.step"), "dataset")   # errors are per-part, never fatal
 ```
+
+`make_drawing()` performs one-part generation and returns file paths plus a
+typed annotation record. `batch()` expands the input list, processes parts in
+parallel when requested, and assembles the split COCO manifests. A part that
+fails to render is reported in the per-part result and does not prevent other
+parts from being processed.
 
 ## 2. Output layout
 
@@ -118,7 +132,7 @@ Category 0 is Roboflow's unused root.
 | 1 | `gdnts` | feature control frames | AP242 PMI, else generated |
 | 2 | `roughnesses` | surface-texture symbols | **generated — the Ra value is not real** |
 | 3 | `radii` | fillet / corner radius and diameter (`⌀`) callouts | B-rep |
-| 4 | `chamfers` | chamfer and countersink callouts | B-rep (drill points rejected) |
+| 4 | `chamferes` | chamfer and countersink callouts | B-rep (drill points rejected) |
 | 5 | `bores` | non-diametric bore features | B-rep |
 | 6 | `threads` | thread specifications | PMI, else generated against physical tests |
 | 7 | `dimensions` | linear, aligned, and angular dimensions | B-rep |
@@ -209,7 +223,7 @@ its **own annotated orthographic view** in a reserved strip — `ITEM 1`,
 - **Paper vs. model space** is stated on every geometric field; map between
   them with `ViewRecord.paper_origin`.
 - **Deterministic** — style, split and every generated value come from a
-  BLAKE2b hash of the part name, so a corpus regenerates identically.
+  SHA-1 hash of the part name, so a corpus regenerates identically.
 
 ## 10. CLI
 
@@ -247,6 +261,7 @@ python -m generation.tools.coco_view dataset/train --check   # validate, no imag
 ```
 generation/
   __main__.py     entry point; runs the cli module
+  assets/          README figures and generated drawing preview
   cli/
     __init__.py
     __main__.py
@@ -279,6 +294,28 @@ generation/
   tools/     coco_view.py   dataset preview / validator
 ```
 
+The repository also contains `generation/examples/models/` with the example
+STEP inputs listed in the attached project tree. Generated dataset files use
+this layout:
+
+```text
+dataset/
+  train/
+    _annotations.coco.json
+    <part>.png
+  valid/
+    _annotations.coco.json
+    <part>.png
+  test/
+    _annotations.coco.json
+    <part>.png
+```
+
+Large generated datasets or other artifacts that are not included in the
+repository are available on the shared drive:
+
+<https://drive.google.com/drive/folders/1rHwoiXBxIVY4zxsPVJP3d27EiWnvynUY>
+
 ```bash
 python generation/examples/make_parts.py && python -m pytest generation/tests -q
 ```
@@ -297,3 +334,11 @@ python generation/examples/make_parts.py && python -m pytest generation/tests -q
   on them.
 
 Always have an engineer check a drawing before it becomes a contract document.
+
+## 14. Related components
+
+- [Extraction](../extraction/README.md) trains an RF-DETR detector on the
+  generated COCO dataset.
+- [Benchmarks](../benchmarks/README.md) evaluates model outputs against the
+  dataset ground truth.
+- [Repository overview](../README.md) summarizes the complete workflow.
