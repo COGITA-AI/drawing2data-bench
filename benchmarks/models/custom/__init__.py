@@ -1,5 +1,5 @@
 from .model_download import download_model
-from ...datasets.base import FeatureList, Feature, Category
+from datasets.base import FeatureList, Feature, Category
 from models.base import ModelClassBase
 from rfdetr import RFDETRLarge
 from pathlib import Path
@@ -28,10 +28,16 @@ class ModelClass(ModelClassBase):
 
         lst = []
         for i in range(len(detections.xyxy)):
+            try:
+                category = Category(class_name[i])
+            except:
+                continue
             obj = {
-                "bbox": detections.xyxy[i],
+                "id": i,
+                "bbox": tuple(detections.xyxy[i]),
                 "confidence": detections.confidence[i],
-                "category": Category(class_name[i])
+                "category": category,
+                "text": ""
             }
             lst.append(Feature.model_validate(obj))
 

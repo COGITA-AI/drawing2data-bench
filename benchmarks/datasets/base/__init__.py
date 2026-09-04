@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod
 from pydantic import BaseModel, Field
-from typing import Annotated
+from typing import Annotated, Optional
 from enum import Enum
 
-Coordinate = Annotated[int, Field(ge=0)]
+Coordinate = Annotated[float, Field(ge=0)]
 
 class Category(str, Enum):
     GDNT = "gdnts"
     ROUGHNESS = "roughnesses"
     RADIUS = "radii"
-    CHAMFER = "chamferes"
+    CHAMFER = "chamfers"
     BORE = "bores"
     THREAD = "threads"
     DIMENSION = "dimensions"
@@ -40,6 +40,7 @@ class Feature(BaseModel):
 
 class FeatureList(BaseModel):
     feature_list: list[Feature]
+    cost: Optional[float] = 0.0
 
     def __getitem__(self, key):
         return self.feature_list[key]

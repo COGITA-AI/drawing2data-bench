@@ -3,13 +3,10 @@ name: "benchmark"
 samples_cap: 10
 
 datasets:
-- custom
+- generated
 
 models:
-- openai_gpt5_4_mini
-- openai_gpt5_6_Sol
-- gemini_3_1_flash_lite
-- gemini_3_5_flash
+- custom
 
 metrics:
 - bbox_f1

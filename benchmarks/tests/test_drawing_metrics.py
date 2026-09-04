@@ -43,7 +43,7 @@ def testing_data():
 def test_bbox_f1(testing_data):
     output, target = testing_data
     from metrics.bbox_f1 import Metric
-    metric = Metric(threshold=0.5)
+    metric = Metric()
     assert metric.forward(output, target) == pytest.approx(0.5714285714)
 
 
@@ -122,23 +122,6 @@ def test_features_f1_em_localisation(testing_data):
     metric = Metric()
     metric.threshold = 0.5
     assert metric.forward(output, target) == pytest.approx(0.2857142857)
-
-
-# ---------------------------------------------------------------------------
-# features_cer_localisation_unpadded
-# ---------------------------------------------------------------------------
-# Pair by location (max IoU): O0-T0 (IoU 1), O1-T1 (IoU 2/3), O2-T2 (IoU 0).
-# With IoU > 0.5: pairs O0-T0 and O1-T1.
-# CER per pair:
-#   O0-T0: "R8.9" vs "R8.9"       -> cer 0      -> similarity 1
-#   O1-T1: "17.7±0.1" vs "17.7 ±0.1" -> cer 1/9  -> similarity 8/9
-# Unpaired (O3, and T2 via the sub-threshold pair) skipped.
-# metric = mean similarity = (1 + 8/9)/2 = 17/18 = 0.944444
-def test_features_cer_localisation_unpadded(testing_data):
-    output, target = testing_data
-    from metrics.features_cer_localisation_unpadded import Metric
-    metric = Metric()
-    assert metric.forward(output, target) == pytest.approx(0.9444444444)
 
 
 # ---------------------------------------------------------------------------

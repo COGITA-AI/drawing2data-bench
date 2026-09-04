@@ -1,0 +1,24 @@
+name: "benchmark"
+
+samples_cap: 100
+
+datasets:
+- generated
+
+models:
+- custom
+- gemini_3_1_flash_lite
+- gemini_3_5_flash
+- openai_gpt5_6_Luna
+- openai_gpt5_6_Terra
+- openai_gpt5_6_Sol
+
+metrics:
+- bbox_f1
+- bbox_precision
+- bbox_recall
+- features_cer_localisation_padded
+- features_cer_unstructured
+- features_f1_em_localisation
+- features_f1_em_unstructured
+- cost

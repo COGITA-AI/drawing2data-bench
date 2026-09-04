@@ -4,28 +4,28 @@
       "id": 0,
       "bbox": [10, 10, 110, 60],
       "text": "R8.9",
-      "category": "radius",
+      "category": "radii",
       "confidence": 0.9
     },
     {
       "id": 1,
       "bbox": [200, 10, 300, 60],
       "text": "17.7±0.1",
-      "category": "dimension",
+      "category": "dimensions",
       "confidence": 0.94
     },
     {
       "id": 2,
       "bbox": [400, 10, 500, 60],
       "text": "29.6°",
-      "category": "dimension",
+      "category": "dimensions",
       "confidence": 0.87
     },
     {
       "id": 3,
       "bbox": [600, 10, 700, 60],
       "text": "EXTRA",
-      "category": "note",
+      "category": "notes",
       "confidence": 0.8
     }
   ]

@@ -5,25 +5,25 @@
   },
   "categories": [
     {"id": 0, "name": "none"},
-    {"id": 1, "name": "gdnt"},
-    {"id": 2, "name": "roughness"},
-    {"id": 3, "name": "radius"},
-    {"id": 4, "name": "chamfer"},
-    {"id": 5, "name": "bore"},
-    {"id": 6, "name": "thread"},
-    {"id": 7, "name": "dimension"},
-    {"id": 8, "name": "note"},
-    {"id": 9, "name": "datum"},
-    {"id": 10, "name": "leader_note"},
-    {"id": 11, "name": "table"},
-    {"id": 12, "name": "view_caption"}
+    {"id": 1, "name": "gdnts"},
+    {"id": 2, "name": "roughnesses"},
+    {"id": 3, "name": "radii"},
+    {"id": 4, "name": "chamfers"},
+    {"id": 5, "name": "bores"},
+    {"id": 6, "name": "threads"},
+    {"id": 7, "name": "dimensions"},
+    {"id": 8, "name": "notes"},
+    {"id": 9, "name": "datums"},
+    {"id": 10, "name": "leader_notes"},
+    {"id": 11, "name": "tables"},
+    {"id": 12, "name": "view_captions"}
   ],
   "images": [
     {"id": 1, "file_name": "sample1.png", "width": 800, "height": 200}
   ],
   "annotations": [
-    {"id": 1, "image_id": 1, "category_id": 3, "category": "radius", "bbox": [10, 10, 110, 60], "area": 6000, "iscrowd": 0, "text": "R8.9", "confidence": 1.0},
-    {"id": 2, "image_id": 1, "category_id": 7, "category": "dimension", "bbox": [220, 10, 320, 60], "area": 6000, "iscrowd": 0, "text": "17.7 ±0.1", "confidence": 1.0},
-    {"id": 3, "image_id": 1, "category_id": 7, "category": "dimension", "bbox": [100, 200, 200, 250], "area": 5000, "iscrowd": 0, "text": "29.6 deg", "confidence": 1.0}
+    {"id": 1, "image_id": 1, "category_id": 3, "category": "radii", "bbox": [10, 10, 100, 50], "area": 6000, "iscrowd": 0, "text": "R8.9", "confidence": 1.0},
+    {"id": 2, "image_id": 1, "category_id": 7, "category": "dimensions", "bbox": [220, 10, 100, 50], "area": 6000, "iscrowd": 0, "text": "17.7 ±0.1", "confidence": 1.0},
+    {"id": 3, "image_id": 1, "category_id": 7, "category": "dimensions", "bbox": [100, 200, 100, 50], "area": 5000, "iscrowd": 0, "text": "29.6 deg", "confidence": 1.0}
   ]
 }

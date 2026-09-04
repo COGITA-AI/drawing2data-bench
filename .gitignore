@@ -1,7 +1,5 @@
-generation/out
-generation/step
-extraction/__pycache__
-benchmarks/__pycache__
+__pycache__
+models/*
 dataset
 output
 temp

@@ -1,4 +1,4 @@
-from ..base import DatasetClassBase, SampleClassBase, ExtractionResult, FeatureList
+from ..base import DatasetClassBase, SampleClassBase, FeatureList
 from pycocotools.coco import COCO
 from pathlib import Path
 import base64
@@ -7,7 +7,7 @@ import os
 
 class SampleClass(SampleClassBase):
     def __init__(self, id, coco, dirname):
-        super().__init__(self, id)
+        super().__init__(id)
         categories = ["gdnts", "roughnesses", "radii", "chamferes", "bores", "threads", "dimensions", "notes", "datums", "leader_notes", "tables", "view_captions"]
         self.img_info = coco.loadImgs(coco.getImgIds()[int(id)])[0]
         ann_ids = coco.getAnnIds(imgIds=self.img_info["id"])
@@ -23,7 +23,19 @@ class SampleClass(SampleClassBase):
         self.path = dirname / self.img_info["file_name"]
 
     def image(self):
-        image = base64.b64encode(self.path.read_bytes()).decode()
+        from PIL import Image
+        import io
+
+        with Image.open(self.path) as img:
+            new_size = (int(img.width / 1.5), int(img.height / 1.5))
+            resized = img.resize(new_size, Image.LANCZOS)
+
+            buffer = io.BytesIO()
+            # Preserve original format if known, default to PNG
+            img_format = img.format or "PNG"
+            resized.save(buffer, format=img_format)
+            image = base64.b64encode(buffer.getvalue()).decode()
+
         return image
     
     def ground_truth(self):
@@ -32,10 +44,10 @@ class SampleClass(SampleClassBase):
 class DatasetClass(DatasetClassBase):
     def __init__(self) -> None:
         super().__init__()
-        dirname = Path(f"{os.path.dirname(os.path.abspath(__file__))}")
-        coco = COCO(dirname / 'data' / '_annotations.coco.json')
-        img_ids = coco.getImgIds()
-        self.samples = [SampleClass(i, coco, dirname) for i in range(len(img_ids))]
+        # dirname = Path(f"{os.path.dirname(os.path.abspath(__file__))}")
+        # coco = COCO(dirname / 'data' / '_annotations.coco.json')
+        # img_ids = coco.getImgIds()
+        # self.samples = [SampleClass(i, coco, dirname) for i in range(len(img_ids))]
 
     def __len__(self) -> int:
         return len(self.samples)
