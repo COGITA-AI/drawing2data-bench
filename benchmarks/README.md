@@ -142,8 +142,9 @@ The result files are under `results/benchmark_15/`.
 | Gemini 3.5 Flash | **0.7664** | 0.7762 | 0.7569 | **0.8615** | **0.6797** | 0.9404 | **0.5856** | 0.0692 |
 | GPT-5.6 Luna | 0.2047 | 0.2066 | 0.2029 | 0.8279 | 0.1869 | 0.9433 | 0.1092 | 0.0171 |
 | GPT-5.6 Terra | 0.4361 | 0.5363 | 0.3674 | 0.7246 | 0.4033 | 0.9449 | 0.2671 | 0.0456 |
-| GPT-5.6 Sol | 0.5504 | 0.5430 | 0.5580 | 0.8529 | 0.5041 | 0.9363 | 0.3697 | 0.0415 |
+| GPT-5.6 Sol | 0.5504 | 0.5430 | 0.5580 | 0.8529 | 0.5041 | 0.9363 | 0.3697 | 0.0830 |
 
+ > The real average cost for GPT-5.6 Sol was 0.0415, but there were promotion, so the table accounts for that.
 Values are the exact result JSON values rounded to four decimals. Higher is
 better for the accuracy metrics; `cost` is a recorded mean usage value, so
 lower is cheaper. The results show strong potential for the project: Gemini
