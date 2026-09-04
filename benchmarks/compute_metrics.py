@@ -27,7 +27,11 @@ def main(data, dirname, datasets, test):
                         break
                     if not test:
                         sample_id = str(sample.id).rsplit("/", 1)[-1] # placeholder; it should be resolved later, so you can just use sample.id 
-                        output = json.loads(Path(f"results/{dirname}/outputs/{data["datasets"][i]}/{model}/{sample_id}.json").read_text())
+                        try:
+                            output = json.loads(Path(f"results/{dirname}/outputs/{data["datasets"][i]}/{model}/{sample_id}.json").read_text())
+                        except:
+                            print(f"Warning: output for sample {sample_id} not found. Skipping metric computation for this sample.")
+                            continue
                         metric.aggregate(output, sample)
 
                 metric_dict[data["metrics"][j]] = metric.value()

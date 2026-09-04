@@ -24,13 +24,8 @@ class Metric(MetricBase):
         row_ind, col_ind = linear_sum_assignment(cost)
 
         if len(row_ind) != 0:
-            metric = (cost[row_ind, col_ind]).mean()
-            metrics.append(metric)
-
-        metrics = np.array(metrics)
-    
-        self.values.append(metrics.mean())
-        self.weights.append(len(metrics))
+            self.values.append(cost[row_ind, col_ind].mean())
+            self.weights.append(len(row_ind))
 
     def value(self):
         return 1-(np.array(self.values) / np.array(self.weights).sum(keepdims=True) * np.array(self.weights)).sum()

@@ -32,9 +32,9 @@ class Metric(MetricBase):
                 dy = max(min(max(box1[1], box1[3]), max(box2[1], box2[3])) - max(min(box1[1], box1[3]), min(box2[1], box2[3])), 0)
                 intersection = dx * dy
                 union = (max(box1[0], box1[2]) - min(box1[0], box1[2])) * (max(box1[1], box1[3]) - min(box1[1], box1[3])) + (max(box2[0], box2[2]) - min(box2[0], box2[2])) * (max(box2[1], box2[3]) - min(box2[1], box2[3])) - intersection
-                ious[i][j] = intersection / (union + self.union)
+                ious[i][j] = intersection / (union + self.eps) >= self.threshold
 
-        row_ind, col_ind = linear_sum_assignment(ious)
+        row_ind, col_ind = linear_sum_assignment(ious, maximize=True)
 
         metrics = []
         for i in range(len(output)):
@@ -44,9 +44,12 @@ class Metric(MetricBase):
         for i in range(len(target)):
             if i not in col_ind:
                 metrics.append(1)
-                       
 
         for i, j in zip(row_ind, col_ind):
+            if ious[i][j] <= self.threshold:
+                metrics.append(1)
+                metrics.append(1)
+                continue
             output_text = output[i].text
             target_text = target[j].text
             metrics.append(edit_distance(output_text, target_text) / max(len(output_text), len(target_text), 1))

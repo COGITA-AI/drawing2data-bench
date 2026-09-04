@@ -12,35 +12,34 @@ from io import BytesIO
 from PIL import Image
 
 class ModelClass(ModelClassBase):
-    def __init__(self, MAX_TOKENS:int=13000):
+    def __init__(self, MAX_TOKENS:int=100000):
         self.MAX_TOKENS:int = MAX_TOKENS
-        self.prompts:dict[str,str] = PROMPT 
+        self.prompt:dict[str,str] = PROMPT 
 
         config = dotenv.dotenv_values(".env")
 
         openrouter_client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
-        api_key=config["OPENROUTER_API_KEY"],
+            api_key=config["OPENROUTER_API_KEY"],
         )
         self.client = instructor.from_openai(openrouter_client, mode=instructor.Mode.JSON)
 
     def get_dimensions(self, image: str):
         img_bytes = base64.b64decode(image)
         with Image.open(BytesIO(img_bytes)) as img:
-            return img.size
+            return (img.size[0] * 1.5, img.size[1] * 1.5) # multiply by 1.5 to account for the downscaling factor used in SampleClass.image
 
     def forward(self, image:str) -> FeatureList: 
-        result_str = self.extract_image_with_prompt(image, self.prompt.strip(), FeatureList)
-        result = FeatureList.model_validate_json(result_str)
+        result = self.extract_image_with_prompt(image, self.prompt.strip(), FeatureList)
         width, height = self.get_dimensions(image)
         factor = self.factor(width, height)
         for feature in result.feature_list:
-            feature.bbox = self.scale(feature.bbox, factor)
+            feature.bbox = self.scale(self.process(feature.bbox), factor)
 
         return result
         
     #wyciąga dane ze zdjęcia na podstawie promptu i schematu 
-    def extract_image_with_prompt(self, image:str, prompt:str, schema:None) -> str:
+    def extract_image_with_prompt(self, image:str, prompt:str, schema:None) -> FeatureList:
         image_parts = {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{image}"}}
         messages:list[ChatCompletionMessageParam] = [
             {"role": "system", "content": prompt},
@@ -49,19 +48,22 @@ class ModelClass(ModelClassBase):
 
         assert self.client is not None, "The model needs to be loaded first."
 
-        res = cast(str, self.client.chat.completions.create(
+        res = self.client.chat.completions.create(
             model=self.name,
             response_model=schema,
             messages=messages,
             temperature=0,
-            max_tokens=self.MAX_TOKENS,
-        ))
+        )
         return res
     
     def factor(self, width, height):
-        return np.array([width, height]) / 1000
+        return np.array([[width, height]]) / 1000
 
     def scale(self, points, factor):
         points = np.array(points)
-        points = points * factor
-        return points.tolist()
+        points = points * np.repeat(factor, len(points.flatten())//len(factor.flatten()), axis=0).flatten()
+        return tuple(points.tolist())
+
+    def process(self, points):
+        points = (points[1], points[0], points[3], points[2])
+        return points
