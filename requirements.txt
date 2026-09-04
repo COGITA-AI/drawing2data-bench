@@ -5,6 +5,7 @@ pydantic>=2
 tqdm
 pycocotools
 gdown
+instructor
 cadquery>=2.8
 matplotlib>=3.7
 pillow>=10
