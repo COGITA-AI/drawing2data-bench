@@ -54,7 +54,7 @@ def main():
     image = Image.open(image_path)
 
     model = RFDETRLarge(
-        resolution=1056,
+        resolution=704,
         pretrain_weights=str(weights_path),
         device=args.device,
     )

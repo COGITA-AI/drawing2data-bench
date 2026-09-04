@@ -76,8 +76,8 @@ def parse_args():
     parser.add_argument(
         "--epochs",
         type=int,
-        default=50,
-        help="Number of training epochs (default: 50)",
+        default=20,
+        help="Number of training epochs (default: 20)",
     )
     parser.add_argument(
         "--batch-size",
@@ -100,7 +100,7 @@ if __name__ == "__main__":
     if args.resume is not None and not Path(args.resume).exists():
         raise FileNotFoundError(f"--resume checkpoint not found: {args.resume}")
 
-    model = RFDETRLarge(resolution=1056, device="cuda")
+    model = RFDETRLarge(resolution=704, device="cuda")
 
     model.train(
         dataset_dir=args.dataset_dir,
