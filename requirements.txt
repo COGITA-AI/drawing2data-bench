@@ -1,7 +1,7 @@
 rfdetr[train,loggers,augmentations]>=1.4.0
 scipy
 openai
-pydantic
+pydantic>=2
 tqdm
 pycocotools
 gdown
