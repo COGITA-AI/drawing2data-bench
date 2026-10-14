@@ -1,0 +1,233 @@
+{
+  "feature_list": [
+    {
+      "id": 0,
+      "bbox": [
+        1689.3323999999998,
+        299.2692,
+        1873.1384999999998,
+        321.78060000000005
+      ],
+      "text": "STOCK 10 X 80",
+      "category": "leader_notes",
+      "confidence": 0.97
+    },
+    {
+      "id": 1,
+      "bbox": [
+        4071.3284999999996,
+        1261.9626,
+        4120.437,
+        1285.7982
+      ],
+      "text": "ISO",
+      "category": "view_captions",
+      "confidence": 0.99
+    },
+    {
+      "id": 2,
+      "bbox": [
+        1216.02,
+        2647.0758,
+        1240.8081,
+        2766.2538000000004
+      ],
+      "text": "75 ±0.3",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 3,
+      "bbox": [
+        2773.461,
+        2689.4502,
+        2798.2490999999995,
+        2722.5552000000002
+      ],
+      "text": "75",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 4,
+      "bbox": [
+        2371.2389999999996,
+        4743.9465,
+        2440.4585999999995,
+        4771.7547
+      ],
+      "text": "⌀2.7",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 5,
+      "bbox": [
+        1598.5985999999998,
+        5015.4075,
+        1612.1618999999998,
+        5035.9326
+      ],
+      "text": "3",
+      "category": "leader_notes",
+      "confidence": 0.94
+    },
+    {
+      "id": 6,
+      "bbox": [
+        2182.7558999999997,
+        5094.8595000000005,
+        2196.7868999999996,
+        5115.3846
+      ],
+      "text": "3",
+      "category": "leader_notes",
+      "confidence": 0.94
+    },
+    {
+      "id": 7,
+      "bbox": [
+        2333.823,
+        5147.8275,
+        2394.624,
+        5172.3252
+      ],
+      "text": "PLAN",
+      "category": "view_captions",
+      "confidence": 0.99
+    },
+    {
+      "id": 8,
+      "bbox": [
+        1755.2781,
+        5325.2703,
+        1808.1281999999999,
+        5351.7543
+      ],
+      "text": "2.7",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 9,
+      "bbox": [
+        3269.6906999999997,
+        5325.2703,
+        3407.6621999999998,
+        5351.7543
+      ],
+      "text": "2.7 ±0.1",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 10,
+      "bbox": [
+        1713.1851,
+        5531.8455,
+        1850.2212,
+        5556.3432
+      ],
+      "text": "ELEVATION",
+      "category": "view_captions",
+      "confidence": 0.99
+    },
+    {
+      "id": 11,
+      "bbox": [
+        3278.1092999999996,
+        5531.8455,
+        3400.6467,
+        5556.3432
+      ],
+      "text": "END VIEW",
+      "category": "view_captions",
+      "confidence": 0.99
+    },
+    {
+      "id": 12,
+      "bbox": [
+        3518.5070999999994,
+        5959.5621,
+        3790.7084999999997,
+        6021.7995
+      ],
+      "text": "Ra 3.2 ALL OVER",
+      "category": "roughnesses",
+      "confidence": 0.99
+    },
+    {
+      "id": 13,
+      "bbox": [
+        3514.7654999999995,
+        6067.4844,
+        3604.0962,
+        6091.9821
+      ],
+      "text": "NOTES:",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 14,
+      "bbox": [
+        3514.7654999999995,
+        6113.8314,
+        4008.189,
+        6137.667
+      ],
+      "text": "1. STOCK ENVELOPE 2.7 X 2.7 X 75 mm",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 15,
+      "bbox": [
+        3514.7654999999995,
+        6156.2058,
+        4328.563499999999,
+        6180.0414
+      ],
+      "text": "2. MODEL SCALED X100 FROM SOURCE FILE; DIMENSIONS AS DRAWN",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 16,
+      "bbox": [
+        3514.7654999999995,
+        6199.9044,
+        4160.6592,
+        6223.740000000001
+      ],
+      "text": "3. BREAK SHARP EDGES 0.3 MAX; REMOVE ALL BURRS",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 17,
+      "bbox": [
+        3504.0083999999997,
+        6273.3975,
+        4606.844999999999,
+        6551.4795
+      ],
+      "text": "TITLE BLOCK",
+      "category": "tables",
+      "confidence": 0.99
+    },
+    {
+      "id": 18,
+      "bbox": [
+        3254.2565999999997,
+        6469.379100000001,
+        3344.055,
+        6484.6074
+      ],
+      "text": "FIRST ANGLE",
+      "category": "notes",
+      "confidence": 0.98
+    }
+  ],
+  "cost": 0.0
+}

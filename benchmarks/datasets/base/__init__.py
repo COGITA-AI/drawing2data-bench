@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Annotated, Optional
 from enum import Enum
 
@@ -37,6 +37,15 @@ class Feature(BaseModel):
     "11. tables - any ruled block of fields" \
     "12. view_captions - the caption under a view (e. g. `TOP`, `VIEW A`, `ITEM 3`)")
     confidence: float = Field(ge=0, le=1, description="Confindence of feature existence")
+
+    @field_validator("category", mode="before")
+    @classmethod
+    def normalize_category(cls, value):
+        # AutoDraft COCO uses the misspelling "chamferes"; the benchmark
+        # schema and OpenRouter prompt use "chamfers".
+        if value == "chamferes":
+            return "chamfers"
+        return value
 
 class FeatureList(BaseModel):
     feature_list: list[Feature]

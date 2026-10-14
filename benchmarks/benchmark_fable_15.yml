@@ -1,0 +1,19 @@
+name: "benchmark_fable_15"
+
+samples_cap: 15
+
+datasets:
+- generated
+
+models:
+- claude_fable_5_1
+
+metrics:
+- bbox_f1
+- bbox_precision
+- bbox_recall
+- features_cer_localisation_padded
+- features_cer_unstructured
+- features_f1_em_localisation
+- features_f1_em_unstructured
+- cost

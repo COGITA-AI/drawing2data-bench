@@ -1,0 +1,317 @@
+{
+  "feature_list": [
+    {
+      "id": 0,
+      "bbox": [
+        3807.0779999999995,
+        158.688,
+        4536.69,
+        297.54
+      ],
+      "text": "REVISIONS",
+      "category": "tables",
+      "confidence": 0.99
+    },
+    {
+      "id": 1,
+      "bbox": [
+        1922.2469999999998,
+        241.338,
+        1987.725,
+        261.174
+      ],
+      "text": "R13.485",
+      "category": "radii",
+      "confidence": 0.99
+    },
+    {
+      "id": 2,
+      "bbox": [
+        1772.5829999999999,
+        687.648,
+        1805.322,
+        707.484
+      ],
+      "text": "R15",
+      "category": "radii",
+      "confidence": 0.99
+    },
+    {
+      "id": 3,
+      "bbox": [
+        1997.0789999999997,
+        694.26,
+        2062.557,
+        714.096
+      ],
+      "text": "R14.621",
+      "category": "radii",
+      "confidence": 0.99
+    },
+    {
+      "id": 4,
+      "bbox": [
+        893.3069999999999,
+        958.74,
+        916.6919999999999,
+        1014.942
+      ],
+      "text": "15.485",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 5,
+      "bbox": [
+        4008.189,
+        1338.93,
+        4040.928,
+        1358.766
+      ],
+      "text": "ISO",
+      "category": "view_captions",
+      "confidence": 0.99
+    },
+    {
+      "id": 6,
+      "bbox": [
+        1552.764,
+        1613.328,
+        1636.9499999999998,
+        1633.164
+      ],
+      "text": "2X R2.884",
+      "category": "radii",
+      "confidence": 0.99
+    },
+    {
+      "id": 7,
+      "bbox": [
+        1468.578,
+        1709.202,
+        1524.7019999999998,
+        1729.038
+      ],
+      "text": "11.305",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 8,
+      "bbox": [
+        1459.224,
+        1824.912,
+        1529.379,
+        1844.748
+      ],
+      "text": "VIEW A",
+      "category": "view_captions",
+      "confidence": 0.99
+    },
+    {
+      "id": 9,
+      "bbox": [
+        2375.9159999999997,
+        2006.742,
+        2399.301,
+        2172.042
+      ],
+      "text": "1.894 +0.100/-0.050",
+      "category": "dimensions",
+      "confidence": 0.98
+    },
+    {
+      "id": 10,
+      "bbox": [
+        926.0459999999999,
+        2066.25,
+        949.4309999999999,
+        2112.534
+      ],
+      "text": "1.894",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 11,
+      "bbox": [
+        1468.578,
+        2244.774,
+        1524.7019999999998,
+        2264.61
+      ],
+      "text": "11.307",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 12,
+      "bbox": [
+        3110.205,
+        2277.834,
+        3171.006,
+        2297.67
+      ],
+      "text": "15.485",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 13,
+      "bbox": [
+        1459.224,
+        2357.178,
+        1529.379,
+        2377.014
+      ],
+      "text": "VIEW B",
+      "category": "view_captions",
+      "confidence": 0.99
+    },
+    {
+      "id": 14,
+      "bbox": [
+        3105.528,
+        2390.238,
+        3175.6829999999995,
+        2413.38
+      ],
+      "text": "VIEW C",
+      "category": "view_captions",
+      "confidence": 0.99
+    },
+    {
+      "id": 15,
+      "bbox": [
+        3320.6699999999996,
+        2443.134,
+        3498.3959999999997,
+        2466.276
+      ],
+      "text": "Ra 6.3 ALL OVER",
+      "category": "roughnesses",
+      "confidence": 0.99
+    },
+    {
+      "id": 16,
+      "bbox": [
+        3278.5769999999998,
+        2535.702,
+        3596.613,
+        2558.844
+      ],
+      "text": "UNLESS OTHERWISE SPECIFIED:",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 17,
+      "bbox": [
+        3278.5769999999998,
+        2575.3740000000003,
+        3479.6879999999996,
+        2595.21
+      ],
+      "text": "1. DIMENSIONS IN MM",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 18,
+      "bbox": [
+        3278.5769999999998,
+        2611.7400000000002,
+        3867.8789999999995,
+        2631.576
+      ],
+      "text": "2. TOLERANCES UNLESS NOTED: X.X ±0.5 X.XX ±0.25 X.XXX ±0.05",
+      "category": "notes",
+      "confidence": 0.98
+    },
+    {
+      "id": 19,
+      "bbox": [
+        3278.5769999999998,
+        2648.106,
+        3437.595,
+        2667.942
+      ],
+      "text": "3. ANGLES ±0° 30′",
+      "category": "notes",
+      "confidence": 0.98
+    },
+    {
+      "id": 20,
+      "bbox": [
+        3278.5769999999998,
+        2684.472,
+        3769.662,
+        2704.308
+      ],
+      "text": "4. BREAK SHARP EDGES 0.3 MAX; REMOVE ALL BURRS",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 21,
+      "bbox": [
+        3278.5769999999998,
+        2720.838,
+        3638.7059999999997,
+        2740.674
+      ],
+      "text": "5. DO NOT SCALE FROM THIS DRAWING",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 22,
+      "bbox": [
+        3278.5769999999998,
+        2757.204,
+        3694.8299999999995,
+        2777.04
+      ],
+      "text": "6. STOCK ENVELOPE 11.307 X 15.485 X 1.894 mm",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 23,
+      "bbox": [
+        3278.5769999999998,
+        2793.57,
+        3895.941,
+        2813.406
+      ],
+      "text": "7. MODEL SCALED X20 FROM SOURCE FILE; DIMENSIONS AS DRAWN",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 24,
+      "bbox": [
+        3264.546,
+        2862.996,
+        4536.69,
+        3163.842
+      ],
+      "text": "TITLE BLOCK",
+      "category": "tables",
+      "confidence": 0.99
+    },
+    {
+      "id": 25,
+      "bbox": [
+        3049.4039999999995,
+        3077.886,
+        3166.3289999999997,
+        3097.722
+      ],
+      "text": "THIRD ANGLE",
+      "category": "notes",
+      "confidence": 0.99
+    }
+  ],
+  "cost": 0.0
+}

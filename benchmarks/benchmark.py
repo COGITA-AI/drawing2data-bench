@@ -14,7 +14,7 @@ from models.base import ModelClassBase
 from compute_metrics import main as compute_metrics
 
 def key_usage():
-    config = dotenv.dotenv_values(".env")
+    config = dotenv.dotenv_values(".env") or dotenv.dotenv_values("../.env")
     api_key = config["OPENROUTER_API_KEY"]
     if not api_key:
         raise ValueError("OPENROUTER_API_KEY not found in .env")
@@ -59,6 +59,7 @@ if __name__ == "__main__":
     print("".join([f"- {metric}\n" for metric in data["metrics"]]))
 
     # searching for available place to save benchmark results without overriding the previous ones
+    os.makedirs("results", exist_ok=True)
     dirs = os.listdir("results")
     dirname = name
     if name in dirs:
@@ -79,11 +80,11 @@ if __name__ == "__main__":
     models : list[ModelClassBase] = [getattr(importlib.import_module(f"models.{dataset}"), "ModelClass")() for dataset in tqdm(data["models"])] # path injection possible
     print("Inferencing models...")
     for i, dataset in enumerate(datasets):
-        print(f"========== { data["datasets"][i] } ==========")
-        os.mkdir(f"results/{dirname}/outputs/{data["datasets"][i]}")
+        print(f"========== { data['datasets'][i] } ==========")
+        os.mkdir(f"results/{dirname}/outputs/{data['datasets'][i]}")
         for j, model in enumerate(models):
-            print(f"Testing {data["models"][j]}...")
-            os.mkdir(f"results/{dirname}/outputs/{data["datasets"][i]}/{data["models"][j]}")
+            print(f"Testing {data['models'][j]}...")
+            os.mkdir(f"results/{dirname}/outputs/{data['datasets'][i]}/{data['models'][j]}")
             for k, sample in tqdm(enumerate(dataset)):
                 if k == data["samples_cap"]:
                     break
@@ -96,10 +97,15 @@ if __name__ == "__main__":
                         if not args.no_costs:
                             new = key_usage()
                             extracted.cost = new - old
-                        Path(f"results/{dirname}/outputs/{data["datasets"][i]}/{data["models"][j]}/{sample_id}.json").write_text(extracted.model_dump_json(indent=2))
+                        Path(f"results/{dirname}/outputs/{data['datasets'][i]}/{data['models'][j]}/{sample_id}.json").write_text(
+                            extracted.model_dump_json(indent=2), encoding="utf-8"
+                        )
                     except Exception as exc:
                         print(f"Unable to process sample {sample_id}: Skipped")
-                        Path(f"results/{dirname}/outputs/{data["datasets"][i]}/{data["models"][j]}/{sample_id}.json.log").write_text(str(exc))
+                        print(exc)
+                        Path(f"results/{dirname}/outputs/{data['datasets'][i]}/{data['models'][j]}/{sample_id}.json.log").write_text(
+                            str(exc), encoding="utf-8"
+                        )
 
     print("Generating outputs done.")
 

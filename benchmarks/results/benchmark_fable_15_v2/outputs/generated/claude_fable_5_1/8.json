@@ -1,0 +1,221 @@
+{
+  "feature_list": [
+    {
+      "id": 0,
+      "bbox": [
+        1688.397,
+        284.70300000000003,
+        1884.831,
+        324.42900000000003
+      ],
+      "text": "STOCK 10 X 80",
+      "category": "leader_notes",
+      "confidence": 0.85
+    },
+    {
+      "id": 1,
+      "bbox": [
+        4068.99,
+        1251.3690000000001,
+        4134.468,
+        1291.095
+      ],
+      "text": "ISO",
+      "category": "view_captions",
+      "confidence": 0.95
+    },
+    {
+      "id": 2,
+      "bbox": [
+        1211.3429999999998,
+        2635.1580000000004,
+        1253.436,
+        2774.199
+      ],
+      "text": "75 ±0.3",
+      "category": "dimensions",
+      "confidence": 0.93
+    },
+    {
+      "id": 3,
+      "bbox": [
+        2768.7839999999997,
+        2674.884,
+        2810.877,
+        2734.473
+      ],
+      "text": "75",
+      "category": "dimensions",
+      "confidence": 0.93
+    },
+    {
+      "id": 4,
+      "bbox": [
+        2366.562,
+        4727.394,
+        2450.7479999999996,
+        4773.741
+      ],
+      "text": "ø2.7",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 5,
+      "bbox": [
+        1594.857,
+        5005.476000000001,
+        1622.9189999999999,
+        5038.581
+      ],
+      "text": "3",
+      "category": "leader_notes",
+      "confidence": 0.6
+    },
+    {
+      "id": 6,
+      "bbox": [
+        2179.482,
+        5157.759,
+        2207.544,
+        5190.8640000000005
+      ],
+      "text": "3",
+      "category": "leader_notes",
+      "confidence": 0.6
+    },
+    {
+      "id": 7,
+      "bbox": [
+        2324.4689999999996,
+        5217.348,
+        2399.301,
+        5257.0740000000005
+      ],
+      "text": "PLAN",
+      "category": "view_captions",
+      "confidence": 0.95
+    },
+    {
+      "id": 8,
+      "bbox": [
+        1749.1979999999999,
+        5396.115000000001,
+        1805.322,
+        5435.841
+      ],
+      "text": "2.7",
+      "category": "dimensions",
+      "confidence": 0.93
+    },
+    {
+      "id": 9,
+      "bbox": [
+        3273.8999999999996,
+        5396.115000000001,
+        3409.533,
+        5435.841
+      ],
+      "text": "2.7 ±0.1",
+      "category": "dimensions",
+      "confidence": 0.93
+    },
+    {
+      "id": 10,
+      "bbox": [
+        1707.1049999999998,
+        5607.987,
+        1852.0919999999999,
+        5647.713000000001
+      ],
+      "text": "ELEVATION",
+      "category": "view_captions",
+      "confidence": 0.95
+    },
+    {
+      "id": 11,
+      "bbox": [
+        3273.8999999999996,
+        5607.987,
+        3414.2099999999996,
+        5647.713000000001
+      ],
+      "text": "END VIEW",
+      "category": "view_captions",
+      "confidence": 0.95
+    },
+    {
+      "id": 12,
+      "bbox": [
+        3507.7499999999995,
+        6005.247,
+        3797.7239999999997,
+        6078.078
+      ],
+      "text": "Ra 3.2 ALL OVER",
+      "category": "roughnesses",
+      "confidence": 0.9
+    },
+    {
+      "id": 13,
+      "bbox": [
+        3507.7499999999995,
+        6150.909000000001,
+        3601.2899999999995,
+        6190.635
+      ],
+      "text": "NOTES:",
+      "category": "notes",
+      "confidence": 0.95
+    },
+    {
+      "id": 14,
+      "bbox": [
+        3507.7499999999995,
+        6203.877,
+        4012.8659999999995,
+        6243.603
+      ],
+      "text": "1. STOCK ENVELOPE 2.7 X 2.7 X 75 mm",
+      "category": "notes",
+      "confidence": 0.93
+    },
+    {
+      "id": 15,
+      "bbox": [
+        3507.7499999999995,
+        6250.224,
+        4340.255999999999,
+        6289.950000000001
+      ],
+      "text": "2. MODEL SCALED X100 FROM SOURCE FILE; DIMENSIONS AS DRAWN",
+      "category": "notes",
+      "confidence": 0.93
+    },
+    {
+      "id": 16,
+      "bbox": [
+        3507.7499999999995,
+        6289.950000000001,
+        4167.206999999999,
+        6329.676
+      ],
+      "text": "3. BREAK SHARP EDGES 0.3 MAX; REMOVE ALL BURRS",
+      "category": "notes",
+      "confidence": 0.93
+    },
+    {
+      "id": 17,
+      "bbox": [
+        3503.073,
+        6362.781000000001,
+        4616.199,
+        6554.790000000001
+      ],
+      "text": "TITLE BLOCK",
+      "category": "tables",
+      "confidence": 0.95
+    }
+  ],
+  "cost": 0.0
+}

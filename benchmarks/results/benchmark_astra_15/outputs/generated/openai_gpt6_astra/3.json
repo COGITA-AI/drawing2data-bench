@@ -1,0 +1,245 @@
+{
+  "feature_list": [
+    {
+      "id": 0,
+      "bbox": [
+        1180.242,
+        296.79900000000004,
+        1352.154,
+        322.50600000000003
+      ],
+      "text": "THICKNESS 1.3",
+      "category": "leader_notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 1,
+      "bbox": [
+        1048.002,
+        345.87600000000003,
+        1209.996,
+        371.583
+      ],
+      "text": "STOCK 28 X 34",
+      "category": "notes",
+      "confidence": 0.98
+    },
+    {
+      "id": 2,
+      "bbox": [
+        1854.666,
+        434.682,
+        1881.114,
+        479.08500000000004
+      ],
+      "text": "1.3",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 3,
+      "bbox": [
+        2231.55,
+        490.77000000000004,
+        2264.61,
+        518.8140000000001
+      ],
+      "text": "25",
+      "category": "dimensions",
+      "confidence": 1.0
+    },
+    {
+      "id": 4,
+      "bbox": [
+        2621.658,
+        549.195,
+        2638.188,
+        567.8910000000001
+      ],
+      "text": "4",
+      "category": "leader_notes",
+      "confidence": 0.88
+    },
+    {
+      "id": 5,
+      "bbox": [
+        2221.632,
+        670.719,
+        2277.834,
+        696.426
+      ],
+      "text": "PLAN",
+      "category": "view_captions",
+      "confidence": 1.0
+    },
+    {
+      "id": 6,
+      "bbox": [
+        1183.548,
+        698.763,
+        1289.34,
+        724.47
+      ],
+      "text": "2X R33.3",
+      "category": "radii",
+      "confidence": 0.99
+    },
+    {
+      "id": 7,
+      "bbox": [
+        720.708,
+        733.8180000000001,
+        747.1560000000001,
+        834.3090000000001
+      ],
+      "text": "31 ±0.3",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 8,
+      "bbox": [
+        1150.488,
+        974.5290000000001,
+        1219.914,
+        1000.2360000000001
+      ],
+      "text": "R13.3",
+      "category": "radii",
+      "confidence": 0.99
+    },
+    {
+      "id": 9,
+      "bbox": [
+        1114.122,
+        1182.5220000000002,
+        1143.876,
+        1210.566
+      ],
+      "text": "25",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 10,
+      "bbox": [
+        1067.838,
+        1362.471,
+        1190.16,
+        1388.178
+      ],
+      "text": "ELEVATION",
+      "category": "view_captions",
+      "confidence": 1.0
+    },
+    {
+      "id": 11,
+      "bbox": [
+        1877.808,
+        1481.6580000000001,
+        1920.786,
+        1507.365
+      ],
+      "text": "ISO",
+      "category": "view_captions",
+      "confidence": 1.0
+    },
+    {
+      "id": 12,
+      "bbox": [
+        2277.834,
+        1572.8010000000002,
+        2572.068,
+        1640.574
+      ],
+      "text": "Ra 6.3 ALL OVER",
+      "category": "roughnesses",
+      "confidence": 0.99
+    },
+    {
+      "id": 13,
+      "bbox": [
+        2274.5280000000002,
+        1691.988,
+        2373.708,
+        1720.0320000000002
+      ],
+      "text": "NOTES:",
+      "category": "notes",
+      "confidence": 1.0
+    },
+    {
+      "id": 14,
+      "bbox": [
+        2274.5280000000002,
+        1741.065,
+        2790.264,
+        1769.1090000000002
+      ],
+      "text": "1. STOCK ENVELOPE 25 X 1.3 X 31 mm",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 15,
+      "bbox": [
+        2274.5280000000002,
+        1787.805,
+        2654.718,
+        1815.8490000000002
+      ],
+      "text": "2. SHEET THICKNESS 1.3 mm",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 16,
+      "bbox": [
+        2274.5280000000002,
+        1834.545,
+        3134.088,
+        1862.5890000000002
+      ],
+      "text": "3. MODEL SCALED X40 FROM SOURCE FILE; DIMENSIONS AS DRAWN",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 17,
+      "bbox": [
+        2274.5280000000002,
+        1881.285,
+        2968.788,
+        1909.3290000000002
+      ],
+      "text": "4. BREAK SHARP EDGES 0.3 MAX; REMOVE ALL BURRS",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 18,
+      "bbox": [
+        2264.61,
+        1958.4060000000002,
+        3239.88,
+        2271.5640000000003
+      ],
+      "text": "TITLE BLOCK",
+      "category": "tables",
+      "confidence": 1.0
+    },
+    {
+      "id": 19,
+      "bbox": [
+        1950.54,
+        2180.4210000000003,
+        2076.168,
+        2203.791
+      ],
+      "text": "FIRST ANGLE",
+      "category": "notes",
+      "confidence": 0.99
+    }
+  ],
+  "cost": 0.0
+}
