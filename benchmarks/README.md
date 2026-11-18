@@ -173,6 +173,33 @@ Its metric JSON therefore aggregates 14 Luna outputs. The other five model
 directories contain all 15 sample outputs. This difference must be considered
 when comparing the table.
 
+### Benchmark results: Fable 5.1, Opus 5.5, and GPT-6 Astra
+
+These runs reuse the `benchmark_15` protocol: `generated` dataset, 15 samples,
+the same eight metrics, the shared OpenRouter prompt, temperature `0`, and
+Instructor JSON. They were executed as three separate configs so each result
+directory contains one model:
+
+| config | result directory | samples |
+|---|---|---|
+| `benchmark_fable_15.yml` | `results/benchmark_fable_15_v2/` | 15/15 (the first `benchmark_fable_15` run stopped at an API limit) |
+| `benchmark_opus_15.yml` | `results/benchmark_opus_15/` | 15/15 |
+| `benchmark_astra_15.yml` | `results/benchmark_astra_15/` | 15/15 |
+
+| model | bbox F1 | bbox precision | bbox recall | feature F1, unstructured | feature F1, localization | CER, unstructured | CER, localization padded | cost |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Claude Fable 5.1 | 0.7115 | 0.7077 | 0.7155 | 0.8819 | 0.6319 | 0.9368 | 0.5174 | 0.2464 |
+| Claude Opus 5.5 | 0.6915 | 0.6896 | 0.6934 | **0.8898** | 0.6281 | 0.9377 | 0.5038 | **0.0145** |
+| GPT-6 Astra | **0.8730** | **0.8545** | **0.8923** | 0.8784 | **0.8324** | **0.9383** | **0.7603** | 0.0381 |
+
+Values are the exact result JSON values rounded to four decimals. Unstructured
+text scores are close across the three models. The ranking difference is
+localization (bbox F1 and localized exact-match F1). These numbers are not a
+training result: the three models were called through OpenRouter with no
+weight updates. The local RF-DETR detector is trained separately; see
+`extraction/train.py` and the Recorded training run section in
+[extraction/README.md](../extraction/README.md) (`python -m extraction.train`).
+
 ### Inference comparison on one sample
 
 The following 2x3 comparison uses the same generated drawing and the saved
@@ -309,8 +336,9 @@ the common 1,000-coordinate prompt contract.
 
 The model-specific wrappers select the following OpenRouter identifiers:
 `google/gemini-3.1-flash-lite`, `google/gemini-3.5-flash`,
-`openai/gpt-5.6-luna`, `openai/gpt-5.6-terra`, and
-`openai/gpt-5.6-sol`. All OpenRouter calls use temperature `0` and the
+`openai/gpt-5.6-luna`, `openai/gpt-5.6-terra`, `openai/gpt-5.6-sol`,
+`anthropic/claude-fable-5.1`, `anthropic/claude-opus-5.5`, and
+`openai/gpt-6-astra`. All OpenRouter calls use temperature `0` and the
 Instructor JSON response mode with the shared `FeatureList` schema.
 
 ## 6. Metrics
@@ -479,8 +507,9 @@ Current dataset modules include:
 - `table_recognition_testing_dataset`
 
 Current model modules include `custom`, `gemini_3_1_flash_lite`,
-`gemini_3_5_flash`, `openai_gpt5_6_Luna`, `openai_gpt5_6_Sol`, and
-`openai_gpt5_6_Terra`.
+`gemini_3_5_flash`, `openai_gpt5_6_Luna`, `openai_gpt5_6_Sol`,
+`openai_gpt5_6_Terra`, `claude_fable_5_1`, `claude_opus_5_5`, and
+`openai_gpt6_astra`.
 
 Current metric modules are the 12 metrics listed in section 6.
 
@@ -530,8 +559,11 @@ The relevant benchmark tree is:
 benchmarks/
   benchmark.py          run inference and metric computation
   compute_metrics.py    recompute metrics from saved outputs
-  default.yml           default benchmark configuration
-  benchmark_15.yml      configuration for the documented 15-sample run
+  default.yml              default benchmark configuration
+  benchmark_15.yml         configuration for the documented 15-sample run
+  benchmark_fable_15.yml   Claude Fable 5.1 (results in benchmark_fable_15_v2)
+  benchmark_opus_15.yml    Claude Opus 5.5
+  benchmark_astra_15.yml   GPT-6 Astra
   datasets/             dataset adapters and COCO fixtures
   models/               detector and OpenRouter model adapters
   metrics/              drawing, table, and cost metrics

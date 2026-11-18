@@ -1,0 +1,365 @@
+{
+  "feature_list": [
+    {
+      "id": 0,
+      "bbox": [
+        3386.1479999999997,
+        132.24,
+        4546.044,
+        482.676
+      ],
+      "text": "TITLE BLOCK",
+      "category": "tables",
+      "confidence": 0.9
+    },
+    {
+      "id": 1,
+      "bbox": [
+        3816.432,
+        495.90000000000003,
+        4546.044,
+        624.8340000000001
+      ],
+      "text": "REVISIONS",
+      "category": "tables",
+      "confidence": 0.9
+    },
+    {
+      "id": 2,
+      "bbox": [
+        3400.1789999999996,
+        535.572,
+        3559.1969999999997,
+        562.02
+      ],
+      "text": "NOTES:",
+      "category": "notes",
+      "confidence": 0.9
+    },
+    {
+      "id": 3,
+      "bbox": [
+        3400.1789999999996,
+        565.326,
+        3704.1839999999997,
+        591.774
+      ],
+      "text": "1. STOCK ENVELOPE 30 X 6.61 X 3.05 mm",
+      "category": "notes",
+      "confidence": 0.85
+    },
+    {
+      "id": 4,
+      "bbox": [
+        3400.1789999999996,
+        591.774,
+        3863.2019999999998,
+        618.222
+      ],
+      "text": "2. MODEL SCALED X20 FROM SOURCE FILE; DIMENSIONS AS DRAWN",
+      "category": "notes",
+      "confidence": 0.85
+    },
+    {
+      "id": 5,
+      "bbox": [
+        3400.1789999999996,
+        618.222,
+        3591.9359999999997,
+        664.506
+      ],
+      "text": "Ra 3.2 ALL OVER",
+      "category": "roughnesses",
+      "confidence": 0.85
+    },
+    {
+      "id": 6,
+      "bbox": [
+        388.191,
+        1011.636,
+        411.57599999999996,
+        1067.838
+      ],
+      "text": "3.05",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 7,
+      "bbox": [
+        1627.5959999999998,
+        948.822,
+        1655.658,
+        1130.652
+      ],
+      "text": "3.05 +0.10/-0.05",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 8,
+      "bbox": [
+        636.0719999999999,
+        1176.936,
+        823.1519999999999,
+        1203.384
+      ],
+      "text": "6.61 +0.10/-0.30",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 9,
+      "bbox": [
+        678.165,
+        1309.176,
+        785.7359999999999,
+        1332.318
+      ],
+      "text": "RIGHT SIDE",
+      "category": "view_captions",
+      "confidence": 0.9
+    },
+    {
+      "id": 10,
+      "bbox": [
+        3063.435,
+        1365.378,
+        3100.8509999999997,
+        1388.52
+      ],
+      "text": "30",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 11,
+      "bbox": [
+        3016.665,
+        1494.3120000000001,
+        3138.267,
+        1520.76
+      ],
+      "text": "SECTION A-A",
+      "category": "view_captions",
+      "confidence": 0.9
+    },
+    {
+      "id": 12,
+      "bbox": [
+        3016.665,
+        1788.546,
+        3142.9439999999995,
+        1811.688
+      ],
+      "text": "STOCK 32 X 10",
+      "category": "leader_notes",
+      "confidence": 0.8
+    },
+    {
+      "id": 13,
+      "bbox": [
+        860.568,
+        2000.13,
+        902.661,
+        2023.272
+      ],
+      "text": "ISO",
+      "category": "view_captions",
+      "confidence": 0.9
+    },
+    {
+      "id": 14,
+      "bbox": [
+        1389.069,
+        1990.212,
+        1421.808,
+        2168.736
+      ],
+      "text": "3.31 +0.10/-0.20",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 15,
+      "bbox": [
+        1627.5959999999998,
+        2096.004,
+        1655.658,
+        2324.118
+      ],
+      "text": "6.61 +0.10/-0.05 REF",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 16,
+      "bbox": [
+        2310.4379999999996,
+        2112.534,
+        2333.823,
+        2138.982
+      ],
+      "text": "B",
+      "category": "view_captions",
+      "confidence": 0.8
+    },
+    {
+      "id": 17,
+      "bbox": [
+        1711.782,
+        2178.654,
+        1735.167,
+        2205.102
+      ],
+      "text": "A",
+      "category": "view_captions",
+      "confidence": 0.85
+    },
+    {
+      "id": 18,
+      "bbox": [
+        4284.132,
+        2178.654,
+        4312.1939999999995,
+        2205.102
+      ],
+      "text": "A",
+      "category": "view_captions",
+      "confidence": 0.85
+    },
+    {
+      "id": 19,
+      "bbox": [
+        1440.5159999999998,
+        2257.998,
+        1571.4719999999998,
+        2284.446
+      ],
+      "text": "2X 0.2 X 60°",
+      "category": "chamfers",
+      "confidence": 0.8
+    },
+    {
+      "id": 20,
+      "bbox": [
+        1389.069,
+        2310.8940000000002,
+        1421.808,
+        2363.79
+      ],
+      "text": "3.31",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 21,
+      "bbox": [
+        1562.118,
+        2380.32,
+        1636.9499999999998,
+        2410.074
+      ],
+      "text": "Ra 0.4",
+      "category": "roughnesses",
+      "confidence": 0.85
+    },
+    {
+      "id": 22,
+      "bbox": [
+        790.4129999999999,
+        2386.9320000000002,
+        940.0769999999999,
+        2416.686
+      ],
+      "text": "2X ⌀1.27 THRU",
+      "category": "bores",
+      "confidence": 0.9
+    },
+    {
+      "id": 23,
+      "bbox": [
+        486.40799999999996,
+        2426.604,
+        664.1339999999999,
+        2456.358
+      ],
+      "text": "2X M1.6 x 0.35-6g",
+      "category": "threads",
+      "confidence": 0.9
+    },
+    {
+      "id": 24,
+      "bbox": [
+        3040.0499999999997,
+        2671.248,
+        3114.8819999999996,
+        2697.696
+      ],
+      "text": "30 REF",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 25,
+      "bbox": [
+        907.338,
+        2905.974,
+        1061.6789999999999,
+        2932.422
+      ],
+      "text": "DETAIL B (20:1)",
+      "category": "view_captions",
+      "confidence": 0.9
+    },
+    {
+      "id": 26,
+      "bbox": [
+        2006.4329999999998,
+        2905.974,
+        2188.836,
+        2932.422
+      ],
+      "text": "5.08 +0.20/-0.10",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 27,
+      "bbox": [
+        2913.7709999999997,
+        2905.974,
+        3105.528,
+        2932.422
+      ],
+      "text": "18.05 +0.10/-0.05",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 28,
+      "bbox": [
+        3895.941,
+        2905.974,
+        4078.3439999999996,
+        2932.422
+      ],
+      "text": "6.86 +0.10/-0.20",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 29,
+      "bbox": [
+        3063.435,
+        3038.214,
+        3110.205,
+        3064.6620000000003
+      ],
+      "text": "TOP",
+      "category": "view_captions",
+      "confidence": 0.9
+    }
+  ],
+  "cost": 0.0887879999999992
+}

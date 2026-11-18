@@ -1,0 +1,10 @@
+{
+  "bbox_f1": 0.8729729729724732,
+  "bbox_precision": 0.8544973544973545,
+  "bbox_recall": 0.8922651933701657,
+  "features_cer_localisation_padded": 0.7603028566838849,
+  "features_cer_unstructured": 0.9382912783213577,
+  "features_f1_em_localisation": 0.8324324324319328,
+  "features_f1_em_unstructured": 0.8783783783778786,
+  "cost": 0.03807246666666681
+}

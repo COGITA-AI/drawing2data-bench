@@ -1,0 +1,437 @@
+{
+  "feature_list": [
+    {
+      "id": 0,
+      "bbox": [
+        5422.599,
+        116.92499999999998,
+        6501.822,
+        388.191
+      ],
+      "text": "TITLE BLOCK",
+      "category": "tables",
+      "confidence": 0.95
+    },
+    {
+      "id": 1,
+      "bbox": [
+        5766.8910000000005,
+        411.57599999999996,
+        6501.822,
+        486.40799999999996
+      ],
+      "text": "REVISIONS",
+      "category": "tables",
+      "confidence": 0.93
+    },
+    {
+      "id": 2,
+      "bbox": [
+        5422.599,
+        448.99199999999996,
+        5508.6720000000005,
+        477.054
+      ],
+      "text": "NOTES:",
+      "category": "notes",
+      "confidence": 0.92
+    },
+    {
+      "id": 3,
+      "bbox": [
+        5422.599,
+        495.76199999999994,
+        6011.868,
+        523.824
+      ],
+      "text": "1. STOCK ENVELOPE 4.47 X 3.75 X 3.35 mm",
+      "category": "notes",
+      "confidence": 0.9
+    },
+    {
+      "id": 4,
+      "bbox": [
+        5422.599,
+        537.8549999999999,
+        6428.991,
+        565.9169999999999
+      ],
+      "text": "2. 2 SEPARATE BODIES IN THIS FILE - OVERALL DIMENSIONS ARE THE ENVELOPE; EACH",
+      "category": "notes",
+      "confidence": 0.9
+    },
+    {
+      "id": 5,
+      "bbox": [
+        5455.704000000001,
+        579.948,
+        5780.133000000001,
+        608.01
+      ],
+      "text": "BODY IS SIZED SEPARATELY",
+      "category": "notes",
+      "confidence": 0.9
+    },
+    {
+      "id": 6,
+      "bbox": [
+        5422.599,
+        622.0409999999999,
+        6144.2880000000005,
+        645.4259999999999
+      ],
+      "text": "3. MODEL SCALED X5 FROM SOURCE FILE; DIMENSIONS AS DRAWN",
+      "category": "notes",
+      "confidence": 0.9
+    },
+    {
+      "id": 7,
+      "bbox": [
+        5475.567,
+        664.1339999999999,
+        5687.439,
+        692.1959999999999
+      ],
+      "text": "Ra 1.6 ALL OVER",
+      "category": "roughnesses",
+      "confidence": 0.88
+    },
+    {
+      "id": 8,
+      "bbox": [
+        1271.232,
+        1089.741,
+        1542.6930000000002,
+        1117.8029999999999
+      ],
+      "text": "BODY 2: 1.12 X 1.12",
+      "category": "leader_notes",
+      "confidence": 0.9
+    },
+    {
+      "id": 9,
+      "bbox": [
+        1555.9350000000002,
+        1206.666,
+        1827.3960000000002,
+        1234.7279999999998
+      ],
+      "text": "BODY 1: 4.47 X 3.35",
+      "category": "leader_notes",
+      "confidence": 0.9
+    },
+    {
+      "id": 10,
+      "bbox": [
+        2171.688,
+        1529.379,
+        2264.382,
+        1557.4409999999998
+      ],
+      "text": "Ra 1.6",
+      "category": "roughnesses",
+      "confidence": 0.88
+    },
+    {
+      "id": 11,
+      "bbox": [
+        496.57500000000005,
+        1665.012,
+        529.6800000000001,
+        1889.5079999999998
+      ],
+      "text": "3.35 +0.10/-0.05",
+      "category": "dimensions",
+      "confidence": 0.88
+    },
+    {
+      "id": 12,
+      "bbox": [
+        582.648,
+        1739.8439999999998,
+        615.753,
+        1767.906
+      ],
+      "text": "A",
+      "category": "view_captions",
+      "confidence": 0.8
+    },
+    {
+      "id": 13,
+      "bbox": [
+        2171.688,
+        1739.8439999999998,
+        2204.793,
+        1767.906
+      ],
+      "text": "A",
+      "category": "view_captions",
+      "confidence": 0.8
+    },
+    {
+      "id": 14,
+      "bbox": [
+        999.7710000000001,
+        1767.906,
+        1032.876,
+        1791.291
+      ],
+      "text": "A1",
+      "category": "bores",
+      "confidence": 0.5
+    },
+    {
+      "id": 15,
+      "bbox": [
+        582.648,
+        1936.2779999999998,
+        615.753,
+        1964.34
+      ],
+      "text": "B",
+      "category": "view_captions",
+      "confidence": 0.8
+    },
+    {
+      "id": 16,
+      "bbox": [
+        2171.688,
+        1936.2779999999998,
+        2204.793,
+        1964.34
+      ],
+      "text": "B",
+      "category": "view_captions",
+      "confidence": 0.8
+    },
+    {
+      "id": 17,
+      "bbox": [
+        2145.204,
+        1959.6629999999998,
+        2304.108,
+        1997.0789999999997
+      ],
+      "text": "⊥ 0.17 A",
+      "category": "gdnts",
+      "confidence": 0.85
+    },
+    {
+      "id": 18,
+      "bbox": [
+        1363.9260000000002,
+        2408.6549999999997,
+        1423.515,
+        2436.7169999999996
+      ],
+      "text": "4.47",
+      "category": "dimensions",
+      "confidence": 0.92
+    },
+    {
+      "id": 19,
+      "bbox": [
+        602.5110000000001,
+        2534.9339999999997,
+        648.8580000000001,
+        2577.0269999999996
+      ],
+      "text": "DATUM A",
+      "category": "datums",
+      "confidence": 0.88
+    },
+    {
+      "id": 20,
+      "bbox": [
+        1357.305,
+        2651.859,
+        1436.757,
+        2679.921
+      ],
+      "text": "FRONT",
+      "category": "view_captions",
+      "confidence": 0.93
+    },
+    {
+      "id": 21,
+      "bbox": [
+        2701.3680000000004,
+        2450.7479999999996,
+        2734.473,
+        2679.921
+      ],
+      "text": "3.75 +0.05/-0.03",
+      "category": "dimensions",
+      "confidence": 0.88
+    },
+    {
+      "id": 22,
+      "bbox": [
+        3562.0980000000004,
+        3241.1609999999996,
+        3621.6870000000004,
+        3269.2229999999995
+      ],
+      "text": "4.47",
+      "category": "dimensions",
+      "confidence": 0.92
+    },
+    {
+      "id": 23,
+      "bbox": [
+        3509.13,
+        3423.564,
+        3668.034,
+        3451.6259999999997
+      ],
+      "text": "SECTION A-A",
+      "category": "view_captions",
+      "confidence": 0.93
+    },
+    {
+      "id": 24,
+      "bbox": [
+        4727.394,
+        1749.1979999999999,
+        4760.499000000001,
+        1814.676
+      ],
+      "text": "3.35",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 25,
+      "bbox": [
+        5449.0830000000005,
+        2389.9469999999997,
+        5508.6720000000005,
+        2418.009
+      ],
+      "text": "3.75",
+      "category": "dimensions",
+      "confidence": 0.92
+    },
+    {
+      "id": 26,
+      "bbox": [
+        5402.736000000001,
+        2572.35,
+        5561.64,
+        2595.7349999999997
+      ],
+      "text": "SECTION B-B",
+      "category": "view_captions",
+      "confidence": 0.93
+    },
+    {
+      "id": 27,
+      "bbox": [
+        5177.622,
+        3582.582,
+        5217.348,
+        3605.9669999999996
+      ],
+      "text": "ISO",
+      "category": "view_captions",
+      "confidence": 0.9
+    },
+    {
+      "id": 28,
+      "bbox": [
+        1483.104,
+        3825.7859999999996,
+        1635.3870000000002,
+        3849.171
+      ],
+      "text": "⌀1.12 THRU",
+      "category": "bores",
+      "confidence": 0.9
+    },
+    {
+      "id": 29,
+      "bbox": [
+        1502.967,
+        4040.928,
+        1529.451,
+        4106.406
+      ],
+      "text": "1.68",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 30,
+      "bbox": [
+        1642.008,
+        4162.53,
+        1701.5970000000002,
+        4185.915
+      ],
+      "text": "1.68",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 31,
+      "bbox": [
+        1794.2910000000002,
+        4162.53,
+        1853.88,
+        4185.915
+      ],
+      "text": "2.79",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 32,
+      "bbox": [
+        1734.7020000000002,
+        4237.362,
+        1814.1540000000002,
+        4260.746999999999
+      ],
+      "text": "ITEM 1",
+      "category": "view_captions",
+      "confidence": 0.92
+    },
+    {
+      "id": 33,
+      "bbox": [
+        4906.161,
+        3858.5249999999996,
+        4978.992,
+        3881.91
+      ],
+      "text": "⌀1.12",
+      "category": "dimensions",
+      "confidence": 0.88
+    },
+    {
+      "id": 34,
+      "bbox": [
+        4866.435,
+        4223.330999999999,
+        4945.887000000001,
+        4251.393
+      ],
+      "text": "ITEM 2",
+      "category": "view_captions",
+      "confidence": 0.92
+    },
+    {
+      "id": 35,
+      "bbox": [
+        178.76700000000002,
+        4307.517,
+        946.8030000000001,
+        4429.119
+      ],
+      "text": "HOLE TABLE",
+      "category": "tables",
+      "confidence": 0.93
+    }
+  ],
+  "cost": 0.4197599999999999
+}

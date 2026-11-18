@@ -1,4 +1,3 @@
-from typing import Literal, cast, override
 import instructor
 from models.base import ModelClassBase
 from .prompts import PROMPT
@@ -16,7 +15,7 @@ class ModelClass(ModelClassBase):
         self.MAX_TOKENS:int = MAX_TOKENS
         self.prompt:dict[str,str] = PROMPT 
 
-        config = dotenv.dotenv_values(".env")
+        config = dotenv.dotenv_values(".env") or dotenv.dotenv_values("../.env")
 
         openrouter_client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
@@ -53,6 +52,7 @@ class ModelClass(ModelClassBase):
             response_model=schema,
             messages=messages,
             temperature=0,
+            max_tokens=self.MAX_TOKENS,
         )
         return res
     

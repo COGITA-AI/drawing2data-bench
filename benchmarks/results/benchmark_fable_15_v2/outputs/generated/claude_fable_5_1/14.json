@@ -1,0 +1,473 @@
+{
+  "feature_list": [
+    {
+      "id": 0,
+      "bbox": [
+        654.588,
+        261.744,
+        753.768,
+        287.451
+      ],
+      "text": "37.5 ±0.1",
+      "category": "dimensions",
+      "confidence": 0.95
+    },
+    {
+      "id": 1,
+      "bbox": [
+        962.046,
+        261.744,
+        1011.636,
+        287.451
+      ],
+      "text": "20.4",
+      "category": "dimensions",
+      "confidence": 0.95
+    },
+    {
+      "id": 2,
+      "bbox": [
+        552.102,
+        338.865,
+        724.014,
+        362.235
+      ],
+      "text": "BODY 3: 9.6 X 9.6",
+      "category": "leader_notes",
+      "confidence": 0.9
+    },
+    {
+      "id": 3,
+      "bbox": [
+        733.932,
+        357.56100000000004,
+        876.09,
+        380.93100000000004
+      ],
+      "text": "STOCK 65 X 45",
+      "category": "leader_notes",
+      "confidence": 0.9
+    },
+    {
+      "id": 4,
+      "bbox": [
+        928.986,
+        352.887,
+        1124.04,
+        376.257
+      ],
+      "text": "BODY 1: 40.8 X 40.8",
+      "category": "leader_notes",
+      "confidence": 0.9
+    },
+    {
+      "id": 5,
+      "bbox": [
+        601.692,
+        390.27900000000005,
+        720.708,
+        415.98600000000005
+      ],
+      "text": "⌀4.8 THRU",
+      "category": "bores",
+      "confidence": 0.9
+    },
+    {
+      "id": 6,
+      "bbox": [
+        816.582,
+        387.942,
+        866.172,
+        413.64900000000006
+      ],
+      "text": "R2.8",
+      "category": "radii",
+      "confidence": 0.9
+    },
+    {
+      "id": 7,
+      "bbox": [
+        1104.204,
+        462.72600000000006,
+        1239.75,
+        488.43300000000005
+      ],
+      "text": "⌀38.4 DP 4.8",
+      "category": "bores",
+      "confidence": 0.92
+    },
+    {
+      "id": 8,
+      "bbox": [
+        360.354,
+        500.11800000000005,
+        390.108,
+        551.532
+      ],
+      "text": "20.4",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 9,
+      "bbox": [
+        965.352,
+        549.195,
+        1044.696,
+        572.565
+      ],
+      "text": "2X R3.3",
+      "category": "radii",
+      "confidence": 0.9
+    },
+    {
+      "id": 10,
+      "bbox": [
+        1127.346,
+        556.206,
+        1190.16,
+        579.576
+      ],
+      "text": "Ra 3.2",
+      "category": "roughnesses",
+      "confidence": 0.9
+    },
+    {
+      "id": 11,
+      "bbox": [
+        214.89000000000001,
+        563.2170000000001,
+        310.764,
+        591.2610000000001
+      ],
+      "text": "M6 x 1-6g",
+      "category": "threads",
+      "confidence": 0.92
+    },
+    {
+      "id": 12,
+      "bbox": [
+        409.944,
+        579.576,
+        439.698,
+        647.349
+      ],
+      "text": "(40.8)",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 13,
+      "bbox": [
+        1124.04,
+        647.349,
+        1319.094,
+        673.056
+      ],
+      "text": "BODY 2: 16.8 X 15.6",
+      "category": "leader_notes",
+      "confidence": 0.9
+    },
+    {
+      "id": 14,
+      "bbox": [
+        360.354,
+        675.393,
+        390.108,
+        768.873
+      ],
+      "text": "20.4 ±0.2",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 15,
+      "bbox": [
+        770.298,
+        834.3090000000001,
+        833.112,
+        857.6790000000001
+      ],
+      "text": "(57.9)",
+      "category": "dimensions",
+      "confidence": 0.92
+    },
+    {
+      "id": 16,
+      "bbox": [
+        773.604,
+        1011.921,
+        833.112,
+        1037.6280000000002
+      ],
+      "text": "PLAN",
+      "category": "view_captions",
+      "confidence": 0.95
+    },
+    {
+      "id": 17,
+      "bbox": [
+        2694.39,
+        434.682,
+        2740.674,
+        460.389
+      ],
+      "text": "ISO",
+      "category": "view_captions",
+      "confidence": 0.95
+    },
+    {
+      "id": 18,
+      "bbox": [
+        1616.634,
+        567.8910000000001,
+        1646.388,
+        670.719
+      ],
+      "text": "9.6 ±0.2",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 19,
+      "bbox": [
+        1976.988,
+        680.067,
+        2023.272,
+        708.1110000000001
+      ],
+      "text": "57.9",
+      "category": "dimensions",
+      "confidence": 0.95
+    },
+    {
+      "id": 20,
+      "bbox": [
+        1937.316,
+        857.6790000000001,
+        2059.638,
+        883.3860000000001
+      ],
+      "text": "ELEVATION",
+      "category": "view_captions",
+      "confidence": 0.95
+    },
+    {
+      "id": 21,
+      "bbox": [
+        2608.434,
+        574.902,
+        2634.882,
+        621.642
+      ],
+      "text": "9.6",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 22,
+      "bbox": [
+        2820.018,
+        680.067,
+        2922.504,
+        708.1110000000001
+      ],
+      "text": "40.8 ±0.3",
+      "category": "dimensions",
+      "confidence": 0.95
+    },
+    {
+      "id": 23,
+      "bbox": [
+        2813.406,
+        857.6790000000001,
+        2922.504,
+        883.3860000000001
+      ],
+      "text": "END VIEW",
+      "category": "view_captions",
+      "confidence": 0.95
+    },
+    {
+      "id": 24,
+      "bbox": [
+        667.812,
+        1180.1850000000002,
+        803.3580000000001,
+        1205.892
+      ],
+      "text": "⌀38.4 THRU",
+      "category": "bores",
+      "confidence": 0.92
+    },
+    {
+      "id": 25,
+      "bbox": [
+        604.998,
+        1495.68,
+        681.0360000000001,
+        1521.3870000000002
+      ],
+      "text": "ITEM 1",
+      "category": "view_captions",
+      "confidence": 0.95
+    },
+    {
+      "id": 26,
+      "bbox": [
+        1500.924,
+        1247.958,
+        1527.372,
+        1346.112
+      ],
+      "text": "9.6 ±0.2",
+      "category": "dimensions",
+      "confidence": 0.9
+    },
+    {
+      "id": 27,
+      "bbox": [
+        1653.0,
+        1364.8080000000002,
+        1702.59,
+        1390.515
+      ],
+      "text": "16.8",
+      "category": "dimensions",
+      "confidence": 0.95
+    },
+    {
+      "id": 28,
+      "bbox": [
+        1639.776,
+        1495.68,
+        1712.508,
+        1521.3870000000002
+      ],
+      "text": "ITEM 2",
+      "category": "view_captions",
+      "confidence": 0.95
+    },
+    {
+      "id": 29,
+      "bbox": [
+        2539.008,
+        1236.2730000000001,
+        2661.33,
+        1264.317
+      ],
+      "text": "⌀4.8 THRU",
+      "category": "bores",
+      "confidence": 0.92
+    },
+    {
+      "id": 30,
+      "bbox": [
+        2694.39,
+        1495.68,
+        2767.122,
+        1521.3870000000002
+      ],
+      "text": "ITEM 3",
+      "category": "view_captions",
+      "confidence": 0.95
+    },
+    {
+      "id": 31,
+      "bbox": [
+        2198.4900000000002,
+        1600.845,
+        2469.582,
+        1661.6070000000002
+      ],
+      "text": "Ra 12.5 ALL OVER",
+      "category": "roughnesses",
+      "confidence": 0.88
+    },
+    {
+      "id": 32,
+      "bbox": [
+        2195.184,
+        1706.0100000000002,
+        2291.058,
+        1734.054
+      ],
+      "text": "NOTES:",
+      "category": "notes",
+      "confidence": 0.95
+    },
+    {
+      "id": 33,
+      "bbox": [
+        2195.184,
+        1755.0870000000002,
+        2634.882,
+        1785.468
+      ],
+      "text": "1. STOCK ENVELOPE 57.9 X 40.8 X 9.6 mm",
+      "category": "notes",
+      "confidence": 0.95
+    },
+    {
+      "id": 34,
+      "bbox": [
+        2195.184,
+        1799.4900000000002,
+        3213.4320000000002,
+        1832.208
+      ],
+      "text": "2. 3 SEPARATE BODIES IN THIS FILE - OVERALL DIMENSIONS ARE THE ENVELOPE; EACH BODY",
+      "category": "notes",
+      "confidence": 0.95
+    },
+    {
+      "id": 35,
+      "bbox": [
+        2208.408,
+        1843.8930000000003,
+        2416.686,
+        1874.2740000000001
+      ],
+      "text": "IS SIZED SEPARATELY",
+      "category": "notes",
+      "confidence": 0.95
+    },
+    {
+      "id": 36,
+      "bbox": [
+        2195.184,
+        1885.959,
+        2902.668,
+        1918.6770000000001
+      ],
+      "text": "3. MODEL SCALED X50 FROM SOURCE FILE; DIMENSIONS AS DRAWN",
+      "category": "notes",
+      "confidence": 0.95
+    },
+    {
+      "id": 37,
+      "bbox": [
+        2181.96,
+        1965.4170000000001,
+        3229.962,
+        2304.282
+      ],
+      "text": "TITLE BLOCK",
+      "category": "tables",
+      "confidence": 0.95
+    },
+    {
+      "id": 38,
+      "bbox": [
+        1881.114,
+        2168.7360000000003,
+        2003.436,
+        2199.117
+      ],
+      "text": "FIRST ANGLE",
+      "category": "notes",
+      "confidence": 0.6
+    }
+  ],
+  "cost": 0.3245200000000006
+}

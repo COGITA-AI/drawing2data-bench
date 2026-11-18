@@ -1,0 +1,281 @@
+{
+  "feature_list": [
+    {
+      "id": 0,
+      "bbox": [
+        191.748,
+        306.14700000000005,
+        261.174,
+        327.18
+      ],
+      "text": "2 ±0.1",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 1,
+      "bbox": [
+        1089.327,
+        306.14700000000005,
+        1104.204,
+        327.18
+      ],
+      "text": "2",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 2,
+      "bbox": [
+        543.837,
+        385.605,
+        570.285,
+        404.30100000000004
+      ],
+      "text": "15",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 3,
+      "bbox": [
+        1218.261,
+        385.605,
+        1304.217,
+        406.63800000000003
+      ],
+      "text": "7.5 ±0.3",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 4,
+      "bbox": [
+        1067.838,
+        415.98600000000005,
+        1077.756,
+        430.00800000000004
+      ],
+      "text": "3",
+      "category": "leader_notes",
+      "confidence": 0.92
+    },
+    {
+      "id": 5,
+      "bbox": [
+        509.124,
+        507.129,
+        604.998,
+        525.825
+      ],
+      "text": "END VIEW",
+      "category": "view_captions",
+      "confidence": 0.99
+    },
+    {
+      "id": 6,
+      "bbox": [
+        1208.343,
+        509.46600000000007,
+        1312.482,
+        525.825
+      ],
+      "text": "ELEVATION",
+      "category": "view_captions",
+      "confidence": 0.99
+    },
+    {
+      "id": 7,
+      "bbox": [
+        1082.715,
+        965.181,
+        1107.51,
+        981.5400000000001
+      ],
+      "text": "15",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 8,
+      "bbox": [
+        676.077,
+        969.8550000000001,
+        709.1370000000001,
+        986.214
+      ],
+      "text": "ISO",
+      "category": "view_captions",
+      "confidence": 0.99
+    },
+    {
+      "id": 9,
+      "bbox": [
+        1218.261,
+        1247.958,
+        1302.564,
+        1264.317
+      ],
+      "text": "7.5 ±0.1",
+      "category": "dimensions",
+      "confidence": 0.99
+    },
+    {
+      "id": 10,
+      "bbox": [
+        1067.838,
+        1276.0020000000002,
+        1077.756,
+        1290.0240000000001
+      ],
+      "text": "3",
+      "category": "leader_notes",
+      "confidence": 0.92
+    },
+    {
+      "id": 11,
+      "bbox": [
+        1236.444,
+        1369.4820000000002,
+        1284.381,
+        1385.8410000000001
+      ],
+      "text": "PLAN",
+      "category": "view_captions",
+      "confidence": 0.99
+    },
+    {
+      "id": 12,
+      "bbox": [
+        175.218,
+        1474.6470000000002,
+        338.865,
+        1491.006
+      ],
+      "text": "Ra 3.2 ALL OVER",
+      "category": "roughnesses",
+      "confidence": 0.98
+    },
+    {
+      "id": 13,
+      "bbox": [
+        132.24,
+        1556.4420000000002,
+        436.392,
+        1572.8010000000002
+      ],
+      "text": "UNLESS OTHERWISE SPECIFIED:",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 14,
+      "bbox": [
+        132.24,
+        1591.497,
+        319.029,
+        1605.5190000000002
+      ],
+      "text": "1. DIMENSIONS IN MM",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 15,
+      "bbox": [
+        132.24,
+        1624.2150000000001,
+        712.443,
+        1638.237
+      ],
+      "text": "2. GENERAL TOLERANCE ISO 2768-m: LINEAR ±0.2, ANGULAR ±0.5°",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 16,
+      "bbox": [
+        132.24,
+        1656.9330000000002,
+        596.7330000000001,
+        1670.9550000000002
+      ],
+      "text": "3. BREAK SHARP EDGES 0.3 MAX; REMOVE ALL BURRS",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 17,
+      "bbox": [
+        132.24,
+        1689.651,
+        467.79900000000004,
+        1703.6730000000002
+      ],
+      "text": "4. DO NOT SCALE FROM THIS DRAWING",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 18,
+      "bbox": [
+        132.24,
+        1722.3690000000001,
+        451.269,
+        1736.391
+      ],
+      "text": "5. STOCK ENVELOPE 7.5 X 15 X 2 mm",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 19,
+      "bbox": [
+        132.24,
+        1755.0870000000002,
+        714.096,
+        1769.1090000000002
+      ],
+      "text": "6. MODEL SCALED X20 FROM SOURCE FILE; DIMENSIONS AS DRAWN",
+      "category": "notes",
+      "confidence": 0.99
+    },
+    {
+      "id": 20,
+      "bbox": [
+        119.016,
+        1820.5230000000001,
+        1165.365,
+        1885.959
+      ],
+      "text": "PARTS LIST",
+      "category": "tables",
+      "confidence": 0.99
+    },
+    {
+      "id": 21,
+      "bbox": [
+        119.016,
+        1885.959,
+        1165.365,
+        2217.813
+      ],
+      "text": "TITLE BLOCK",
+      "category": "tables",
+      "confidence": 0.99
+    },
+    {
+      "id": 22,
+      "bbox": [
+        1259.586,
+        2124.333,
+        1350.501,
+        2138.355
+      ],
+      "text": "FIRST ANGLE",
+      "category": "notes",
+      "confidence": 0.98
+    }
+  ],
+  "cost": 0.15161450000000087
+}

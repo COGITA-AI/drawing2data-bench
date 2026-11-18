@@ -8,7 +8,7 @@ import os
 class SampleClass(SampleClassBase):
     def __init__(self, id, coco, dirname):
         super().__init__(id)
-        categories = ["gdnts", "roughnesses", "radii", "chamferes", "bores", "threads", "dimensions", "notes", "datums", "leader_notes", "tables", "view_captions"]
+        categories = ["annotation", "gdnts", "roughnesses", "radii", "chamfers", "bores", "threads", "dimensions", "notes", "datums", "leader_notes", "tables", "view_captions"]
         self.img_info = coco.loadImgs(coco.getImgIds()[int(id)])[0]
         ann_ids = coco.getAnnIds(imgIds=self.img_info["id"])
         annotations = coco.loadAnns(ann_ids)

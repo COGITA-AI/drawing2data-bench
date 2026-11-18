@@ -14,8 +14,8 @@ def main(data, dirname, datasets, test):
     metrics : list[MetricBase] = [getattr(importlib.import_module(f"metrics.{metric}"), "Metric")() for metric in tqdm(data["metrics"])]
     os.mkdir(f"results/{dirname}/metrics/")
     for i, dataset in enumerate(datasets):
-        print(f"========== { data["datasets"][i] } ==========")
-        os.mkdir(f"results/{dirname}/metrics/{data["datasets"][i]}")
+        print(f"========== { data['datasets'][i] } ==========")
+        os.mkdir(f"results/{dirname}/metrics/{data['datasets'][i]}")
         for model in data["models"]:
             print(f"Evaluating {model}...")
             
@@ -28,7 +28,7 @@ def main(data, dirname, datasets, test):
                     if not test:
                         sample_id = str(sample.id).rsplit("/", 1)[-1] # placeholder; it should be resolved later, so you can just use sample.id 
                         try:
-                            output = json.loads(Path(f"results/{dirname}/outputs/{data["datasets"][i]}/{model}/{sample_id}.json").read_text())
+                            output = json.loads(Path(f"results/{dirname}/outputs/{data['datasets'][i]}/{model}/{sample_id}.json").read_text(encoding="utf-8"))
                         except:
                             print(f"Warning: output for sample {sample_id} not found. Skipping metric computation for this sample.")
                             continue
@@ -37,7 +37,9 @@ def main(data, dirname, datasets, test):
                 metric_dict[data["metrics"][j]] = metric.value()
                 metric.clear()
             
-            Path(f"results/{dirname}/metrics/{data["datasets"][i]}/{model}.json").write_text(json.dumps(metric_dict, indent=2))
+            Path(f"results/{dirname}/metrics/{data['datasets'][i]}/{model}.json").write_text(
+                json.dumps(metric_dict, indent=2), encoding="utf-8"
+            )
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="A script for computing metrics from model outputs")
